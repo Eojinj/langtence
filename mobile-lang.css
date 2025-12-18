@@ -249,6 +249,7 @@ body {
     cursor: pointer;
     transition: all var(--transition-fast);
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .btn:disabled {
@@ -493,6 +494,7 @@ textarea.input {
     border-radius: var(--radius-full);
     background: var(--color-bg-active);
     color: var(--color-text-primary);
+    white-space: nowrap;
 }
 
 .badge-primary {
@@ -623,8 +625,13 @@ textarea.input {
         padding: var(--space-md);
     }
     
-    .btn:not(.btn-icon) {
+    .btn:not(.btn-icon):not(.btn-sm) {
         width: 100%;
+    }
+    
+    .btn-sm {
+        width: auto;
+        min-width: fit-content;
     }
     
     .grid-cols-2,
