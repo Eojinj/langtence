@@ -273,8 +273,8 @@
                         <h3 class="heading-3 mb-md">프로필</h3>
                         
                         <div class="flex items-center gap-lg mb-lg">
-                            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
-                                {{ userData.name[0] }}
+                            <div id="settingsAvatar" style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
+                                U
                             </div>
                             <div>
                                 <div class="text-body font-semibold" id="settingsName">사용자</div>
@@ -719,6 +719,7 @@
                 if (screenName === 'settings' && this.userData) {
                     document.getElementById('settingsName').textContent = this.userData.name;
                     document.getElementById('settingsEmail').textContent = this.userData.email;
+                    document.getElementById('settingsAvatar').textContent = this.userData.name[0].toUpperCase();
                 }
                 
                 // 헤더 액션 업데이트
