@@ -94,6 +94,11 @@
     box-sizing: border-box;
 }
 
+html {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
 body {
     font-family: var(--font-family-korean);
     font-size: var(--font-size-base);
@@ -102,6 +107,7 @@ body {
     background-color: var(--color-bg-main);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
 }
 
 /* ==================== 레이아웃 유틸리티 ==================== */
