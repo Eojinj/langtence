@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>언어학습 앱</title>
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 디자인 시스템 CSS -->
+    <link rel="stylesheet" href="mobile-lang.css">
+    
+    <style>
+        /* 화면 전환 애니메이션 */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 틀린 부분 스타일 */
+        .mistake {
+            background: #FFE5E5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--color-error);
+            text-decoration: line-through;
+        }
+        
+        .correct-word {
+            background: #D4F4DD;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--color-success);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- 헤더 -->
+        <header class="app-header">
+            <div class="container flex items-center justify-between">
+                <h1 class="heading-3 m-0">Language Master</h1>
+                <div class="flex items-center gap-md" id="headerActions">
+                    <!-- 로그인 전: 빈 상태 -->
+                    <!-- 로그인 후: 레벨 배지와 나가기 버튼 표시 -->
+                </div>
+            </div>
+        </header>
+        
+        <!-- 진도 바 (학습 세션 중에만 표시) -->
+        <div id="progressSection" style="display: none; background: var(--color-bg-card); padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-border);">
+            <div class="container">
+                <div class="flex justify-between mb-sm">
+                    <span class="text-small" id="progressText">문제 1 / 10</span>
+                    <span class="text-small" id="progressPercent">10%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" style="width: 10%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 메인 콘텐츠 -->
+        <main class="app-content" style="background: var(--color-bg-main);">
+            
+            <!-- 화면 -1: 로그인 -->
+            <div id="screen-login" class="screen active">
+                <div class="container" style="max-width: 450px;">
+                    <div class="mb-2xl" style="text-align: center;">
+                        <h1 class="heading-1 mb-md">Language Master</h1>
+                        <p class="text-body text-muted">언어 학습을 시작하세요</p>
+                    </div>
+                    
+                    <div class="card card-spacious mb-lg">
+                        <div class="flex flex-col gap-md">
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">이메일</label>
+                                <input 
+                                    type="email" 
+                                    id="loginEmail"
+                                    class="input" 
+                                    placeholder="email@example.com"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">비밀번호</label>
+                                <input 
+                                    type="password" 
+                                    id="loginPassword"
+                                    class="input" 
+                                    placeholder="비밀번호 입력"
+                                >
+                            </div>
+                            
+                            <button class="btn btn-primary btn-lg btn-block mt-md" onclick="app.login()">
+                                로그인
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-small text-muted mb-sm">계정이 없으신가요?</p>
+                        <button class="btn btn-secondary" onclick="app.showScreen('signup')">
+                            회원가입
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 -2: 회원가입 -->
+            <div id="screen-signup" class="screen">
+                <div class="container" style="max-width: 450px;">
+                    <div class="mb-2xl" style="text-align: center;">
+                        <h1 class="heading-1 mb-md">회원가입</h1>
+                        <p class="text-body text-muted">새로운 계정을 만들어보세요</p>
+                    </div>
+                    
+                    <div class="card card-spacious mb-lg">
+                        <div class="flex flex-col gap-md">
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">이름</label>
+                                <input 
+                                    type="text" 
+                                    id="signupName"
+                                    class="input" 
+                                    placeholder="이름 입력"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">이메일</label>
+                                <input 
+                                    type="email" 
+                                    id="signupEmail"
+                                    class="input" 
+                                    placeholder="email@example.com"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">비밀번호</label>
+                                <input 
+                                    type="password" 
+                                    id="signupPassword"
+                                    class="input" 
+                                    placeholder="비밀번호 입력"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label class="text-small font-semibold mb-xs" style="display: block;">비밀번호 확인</label>
+                                <input 
+                                    type="password" 
+                                    id="signupPasswordConfirm"
+                                    class="input" 
+                                    placeholder="비밀번호 재입력"
+                                >
+                            </div>
+                            
+                            <button class="btn btn-primary btn-lg btn-block mt-md" onclick="app.signup()">
+                                가입하기
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-small text-muted mb-sm">이미 계정이 있으신가요?</p>
+                        <button class="btn btn-secondary" onclick="app.showScreen('login')">
+                            로그인
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 0: 대시보드 -->
+            <div id="screen-dashboard" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div class="mb-xl">
+                        <h1 class="heading-1 mb-sm">안녕하세요</h1>
+                        <p class="text-body text-muted">학습을 시작하세요</p>
+                    </div>
+                    
+                    <!-- 점수 카드 -->
+                    <div class="card card-spacious mb-xl" style="background: linear-gradient(135deg, #E8F4F8, #F0F9FC);">
+                        <div class="flex justify-between items-start mb-lg">
+                            <div>
+                                <div class="text-small text-muted mb-xs">현재 수준</div>
+                                <h2 class="heading-1 text-primary m-0" id="dashScore">1,250점</h2>
+                            </div>
+                            <button 
+                                class="btn btn-secondary btn-icon btn-sm" 
+                                onclick="app.showScoreGuide()"
+                                style="width: 32px; height: 32px; padding: 0; border-radius: 50%;"
+                                title="점수 구간 보기"
+                            >
+                                ?
+                            </button>
+                        </div>
+                        
+                        <div class="p-md mb-md" style="background: white; border-radius: var(--radius-md);">
+                            <div class="flex justify-between items-center mb-xs">
+                                <span class="text-body font-semibold">원어민 7세 수준</span>
+                                <span class="text-small text-muted">1,000 ~ 1,500점</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 50%;"></div>
+                            </div>
+                            <div class="text-small text-muted mt-xs">다음 단계까지 250점</div>
+                        </div>
+                        
+                        <div class="flex gap-md">
+                            <div class="p-sm" style="flex: 1; background: white; border-radius: var(--radius-md); text-align: center;">
+                                <div class="text-tiny text-muted mb-xs">어휘력</div>
+                                <div class="text-body font-semibold">850점</div>
+                            </div>
+                            <div class="p-sm" style="flex: 1; background: white; border-radius: var(--radius-md); text-align: center;">
+                                <div class="text-tiny text-muted mb-xs">문법</div>
+                                <div class="text-body font-semibold">1,100점</div>
+                            </div>
+                            <div class="p-sm" style="flex: 1; background: white; border-radius: var(--radius-md); text-align: center;">
+                                <div class="text-tiny text-muted mb-xs">작문</div>
+                                <div class="text-body font-semibold">950점</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-lg mb-xl">
+                        <div class="card card-no-hover text-center">
+                            <div class="text-small text-muted mb-sm">총 학습 시간</div>
+                            <div class="heading-1 text-primary" id="dashTotalTime">0h</div>
+                        </div>
+                        
+                        <div class="card card-no-hover text-center">
+                            <div class="text-small text-muted mb-sm">완료한 문제</div>
+                            <div class="heading-1 text-success" id="dashTotalQuestions">0</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg btn-block" onclick="app.startSession()">
+                        학습 시작
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 화면 0.5: 설정 -->
+            <div id="screen-settings" class="screen">
+                <div class="container" style="max-width: 600px;">
+                    <div class="mb-xl">
+                        <h1 class="heading-1 mb-sm">설정</h1>
+                        <p class="text-body text-muted">앱 설정을 관리하세요</p>
+                    </div>
+                    
+                    <!-- 프로필 정보 -->
+                    <div class="card card-spacious mb-lg">
+                        <h3 class="heading-3 mb-md">프로필</h3>
+                        
+                        <div class="flex items-center gap-lg mb-lg">
+                            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
+                                {{ userData.name[0] }}
+                            </div>
+                            <div>
+                                <div class="text-body font-semibold" id="settingsName">사용자</div>
+                                <div class="text-small text-muted" id="settingsEmail">email@example.com</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-secondary btn-block">프로필 수정</button>
+                    </div>
+                    
+                    <!-- 학습 설정 -->
+                    <div class="card card-spacious mb-lg">
+                        <h3 class="heading-3 mb-lg">학습 설정</h3>
+                        
+                        <div class="flex flex-col gap-lg">
+                            <div>
+                                <div class="flex justify-between items-center mb-sm">
+                                    <label class="text-body font-medium">하루 목표 문제 수</label>
+                                    <select class="input" style="width: 120px; padding: var(--space-sm);">
+                                        <option>10개</option>
+                                        <option selected>20개</option>
+                                        <option>30개</option>
+                                        <option>50개</option>
+                                    </select>
+                                </div>
+                                <p class="text-small text-muted">매일 학습할 문제 수를 설정합니다</p>
+                            </div>
+                            
+                            <hr class="divider">
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-sm">
+                                    <label class="text-body font-medium">난이도</label>
+                                    <select class="input" style="width: 120px; padding: var(--space-sm);">
+                                        <option>쉬움</option>
+                                        <option selected>보통</option>
+                                        <option>어려움</option>
+                                    </select>
+                                </div>
+                                <p class="text-small text-muted">문제 난이도를 조정합니다</p>
+                            </div>
+                            
+                            <hr class="divider">
+                            
+                            <div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-body font-medium mb-xs">알림</div>
+                                        <p class="text-small text-muted m-0">학습 시간 알림을 받습니다</p>
+                                    </div>
+                                    <label class="flex items-center gap-sm cursor-pointer">
+                                        <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <hr class="divider">
+                            
+                            <div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-body font-medium mb-xs">음성 지원</div>
+                                        <p class="text-small text-muted m-0">문제 읽어주기 기능</p>
+                                    </div>
+                                    <label class="flex items-center gap-sm cursor-pointer">
+                                        <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 점수 정보 -->
+                    <div class="card card-spacious mb-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="heading-3 m-0 mb-xs">점수 구간 안내</h3>
+                                <p class="text-small text-muted m-0">원어민 나이별 점수 기준</p>
+                            </div>
+                            <button class="btn btn-secondary" onclick="app.showScoreGuide()">
+                                보기
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 계정 관리 -->
+                    <div class="card card-spacious mb-xl">
+                        <h3 class="heading-3 mb-lg">계정 관리</h3>
+                        
+                        <div class="flex flex-col gap-sm">
+                            <button class="btn btn-secondary btn-block" style="justify-content: space-between;">
+                                <span>비밀번호 변경</span>
+                                <span>→</span>
+                            </button>
+                            <button class="btn btn-secondary btn-block" style="justify-content: space-between;">
+                                <span>학습 기록 다운로드</span>
+                                <span>→</span>
+                            </button>
+                            <button class="btn btn-secondary btn-block" style="justify-content: space-between; color: var(--color-error);" onclick="app.logout()">
+                                <span>로그아웃</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-block" onclick="app.showScreen('dashboard')">
+                        대시보드로 돌아가기
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 화면 1: 문장 제시 -->
+            <div id="screen-question" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div class="card card-spacious mb-xl">
+                        <div class="badge badge-primary mb-lg" id="questionType">한국어 → 영어</div>
+                        
+                        <h2 class="heading-2 mb-xl" id="questionText" style="line-height: 1.6;">
+                            문장이 여기에 표시됩니다.
+                        </h2>
+                    </div>
+                    
+                    <div class="card card-spacious">
+                        <label class="text-body font-semibold mb-md" style="display: block;">
+                            답변을 입력하세요
+                        </label>
+                        
+                        <textarea 
+                            id="answerInput"
+                            class="input" 
+                            placeholder="번역 또는 작문을 입력하세요..."
+                            style="min-height: 120px; font-size: var(--font-size-lg);"
+                        ></textarea>
+                        
+                        <div class="flex justify-between items-center mt-lg">
+                            <button class="btn btn-secondary" onclick="app.skipQuestion()">
+                                건너뛰기
+                            </button>
+                            <button class="btn btn-primary btn-lg" onclick="app.submitAnswer()">
+                                제출하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 2: 정답 피드백 -->
+            <div id="screen-correct" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div class="card card-spacious mb-lg" style="background: linear-gradient(135deg, #F0F9F4, #E8F5EC); border: 2px solid var(--color-success);">
+                        <div class="flex items-center gap-lg mb-lg">
+                            <div style="width: 64px; height: 64px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: var(--color-success);">
+                                ✓
+                            </div>
+                            <div>
+                                <h2 class="heading-2 m-0 text-success">정답입니다</h2>
+                                <p class="text-body text-muted m-0 mt-xs">완벽해요</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-md">
+                        <div class="text-small text-muted mb-sm">문제</div>
+                        <p class="text-body font-medium" id="correctOriginal" style="font-size: var(--font-size-lg);"></p>
+                    </div>
+                    
+                    <div class="card mb-xl" style="background: linear-gradient(135deg, #F0F9F4, #FFFFFF); border-left: 4px solid var(--color-success);">
+                        <div class="text-small text-muted mb-sm">나의 답변</div>
+                        <p class="text-body font-medium" id="correctUserAnswer" style="font-size: var(--font-size-lg); color: var(--color-success);"></p>
+                    </div>
+                    
+                    <div class="flex justify-end gap-md">
+                        <button class="btn btn-primary btn-lg" onclick="app.nextQuestion()">
+                            다음 문제
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 3: 오답 피드백 -->
+            <div id="screen-incorrect" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div class="card card-spacious mb-lg" style="background: linear-gradient(135deg, #FFF4E6, #FFEFD5); border: 2px solid var(--color-warning);">
+                        <div class="flex items-center gap-lg mb-lg">
+                            <div style="width: 64px; height: 64px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">
+                                ✗
+                            </div>
+                            <div>
+                                <h2 class="heading-2 m-0 text-warning">아쉬워요</h2>
+                                <p class="text-body text-muted m-0 mt-xs">틀린 부분이 있어요</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-md">
+                        <div class="text-small text-muted mb-sm">문제</div>
+                        <p class="text-body font-medium" id="incorrectOriginal" style="font-size: var(--font-size-lg);"></p>
+                    </div>
+                    
+                    <div class="card mb-md" style="background: linear-gradient(135deg, #FFF4E6, #FFFFFF); border-left: 4px solid var(--color-warning);">
+                        <div class="text-small text-muted mb-sm">나의 답변</div>
+                        <p class="text-body font-medium" id="incorrectUserAnswer" style="font-size: var(--font-size-lg);"></p>
+                    </div>
+                    
+                    <div class="card mb-lg" style="background: linear-gradient(135deg, #F0F9F4, #FFFFFF); border-left: 4px solid var(--color-success);">
+                        <div class="text-small text-muted mb-sm">정답</div>
+                        <p class="text-body font-medium" id="incorrectCorrectAnswer" style="font-size: var(--font-size-lg); color: var(--color-success);"></p>
+                    </div>
+                    
+                    <div class="card mb-xl">
+                        <h3 class="heading-3 mb-md">틀린 부분</h3>
+                        <div id="mistakesList"></div>
+                    </div>
+                    
+                    <div class="flex justify-end gap-md">
+                        <button class="btn btn-secondary" onclick="app.skipPractice()">
+                            건너뛰기
+                        </button>
+                        <button class="btn btn-primary btn-lg" onclick="app.startPractice()">
+                            연습 문제 풀기
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 4: 연습 문제 -->
+            <div id="screen-practice" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div style="background: linear-gradient(135deg, #FFF9E6, #FFFAED); padding: var(--space-lg); border-radius: var(--radius-lg); margin-bottom: var(--space-xl); border: 2px solid var(--color-warning);">
+                        <h3 class="heading-4 m-0 mb-xs">연습이 필요해요</h3>
+                        <p class="text-small text-muted m-0">틀렸던 부분을 다시 연습해봐요</p>
+                    </div>
+                    
+                    <div class="card card-spacious mb-lg">
+                        <div class="badge badge-accent mb-lg" id="practiceProgress">연습 문제</div>
+                        
+                        <h2 class="heading-2 mb-xl" id="practiceQuestion" style="line-height: 1.6;">
+                            연습 문제가 여기에 표시됩니다.
+                        </h2>
+                    </div>
+                    
+                    <div class="card card-spacious mb-lg">
+                        <label class="text-body font-semibold mb-md" style="display: block;">
+                            답변을 입력하세요
+                        </label>
+                        
+                        <textarea 
+                            id="practiceInput"
+                            class="input" 
+                            placeholder="답을 입력하세요..."
+                            style="min-height: 100px; font-size: var(--font-size-lg);"
+                        ></textarea>
+                        
+                        <div class="flex justify-between items-center mt-lg">
+                            <button class="btn btn-secondary" onclick="app.skipPractice()">
+                                건너뛰기
+                            </button>
+                            <button class="btn btn-primary btn-lg" onclick="app.submitPractice()">
+                                확인하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 화면 5: 세션 완료 -->
+            <div id="screen-summary" class="screen">
+                <div class="container" style="max-width: 800px;">
+                    <div class="card card-spacious mb-xl" style="background: linear-gradient(135deg, #E8F4F8, #D4E9F5); text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: var(--space-md);">✓</div>
+                        <h1 class="heading-1 mb-md">학습 완료</h1>
+                        <p class="text-body text-muted">수고하셨어요</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-lg mb-xl">
+                        <div class="card card-no-hover text-center">
+                            <div class="text-small text-muted mb-sm">총 문제</div>
+                            <div class="heading-1 text-primary" id="summaryTotal">0</div>
+                        </div>
+                        
+                        <div class="card card-no-hover text-center">
+                            <div class="text-small text-muted mb-sm">정답률</div>
+                            <div class="heading-1 text-success" id="summaryAccuracy">0%</div>
+                        </div>
+                        
+                        <div class="card card-no-hover text-center">
+                            <div class="text-small text-muted mb-sm">학습 시간</div>
+                            <div class="heading-1" style="color: var(--color-secondary);" id="summaryTime">0분</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card card-spacious mb-xl">
+                        <h3 class="heading-3 mb-lg">학습 결과</h3>
+                        
+                        <div class="flex items-center justify-between mb-md pb-md" style="border-bottom: 1px solid var(--color-border-light);">
+                            <span class="text-body">정답</span>
+                            <div class="flex items-center gap-md">
+                                <span class="badge badge-success badge-lg" id="summaryCorrect">0문제</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-body">오답</span>
+                            <div class="flex items-center gap-md">
+                                <span class="badge badge-error badge-lg" id="summaryIncorrect">0문제</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-md">
+                        <button class="btn btn-primary btn-lg btn-block" onclick="app.startSession()">
+                            다시 학습하기
+                        </button>
+                        <button class="btn btn-secondary btn-block" onclick="app.goToDashboard()">
+                            대시보드로
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <!-- 점수 가이드 모달 -->
+        <div id="scoreGuideModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+            <div class="card" style="max-width: 600px; margin: var(--space-xl); max-height: 80vh; overflow-y: auto;">
+                <div class="flex justify-between items-center mb-lg">
+                    <h2 class="heading-2 m-0">점수 구간 안내</h2>
+                    <button 
+                        class="btn btn-secondary btn-sm" 
+                        onclick="app.closeScoreGuide()"
+                        style="width: 32px; height: 32px; padding: 0;"
+                    >
+                        ×
+                    </button>
+                </div>
+                
+                <p class="text-body text-muted mb-lg">학습 점수에 따른 원어민 나이 수준입니다.</p>
+                
+                <div class="flex flex-col gap-md">
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-primary);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 5세</span>
+                            <span class="badge badge-primary">0 ~ 500점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">기초 일상 대화, 간단한 문장</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-primary);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 6세</span>
+                            <span class="badge badge-primary">500 ~ 1,000점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">기본 시제, 일상적인 표현</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-success);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 7세</span>
+                            <span class="badge badge-success">1,000 ~ 1,500점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">초등 저학년 수준, 복잡한 문장 이해</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-success);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 10세</span>
+                            <span class="badge badge-success">1,500 ~ 2,500점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">초등 고학년 수준, 다양한 표현 구사</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-info);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 13세</span>
+                            <span class="badge" style="background: rgba(125, 187, 218, 0.15); color: var(--color-info);">2,500 ~ 4,000점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">중학생 수준, 논리적 사고 표현</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: var(--color-bg-hover); border-radius: var(--radius-md); border-left: 4px solid var(--color-info);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 16세</span>
+                            <span class="badge" style="background: rgba(125, 187, 218, 0.15); color: var(--color-info);">4,000 ~ 6,000점</span>
+                        </div>
+                        <p class="text-small text-muted m-0">고등학생 수준, 학술적 표현 가능</p>
+                    </div>
+                    
+                    <div class="p-md" style="background: linear-gradient(135deg, #FFF9E6, #FFFAED); border-radius: var(--radius-md); border-left: 4px solid var(--color-warning);">
+                        <div class="flex justify-between items-center mb-xs">
+                            <span class="text-body font-semibold">원어민 성인</span>
+                            <span class="badge badge-warning">6,000점 이상</span>
+                        </div>
+                        <p class="text-small text-muted m-0">성인 수준, 전문적 표현 및 뉘앙스 구사</p>
+                    </div>
+                </div>
+                
+                <div class="mt-lg p-md" style="background: linear-gradient(135deg, #E8F4F8, #F0F9FC); border-radius: var(--radius-md);">
+                    <p class="text-small text-muted m-0">
+                        <strong>점수 산정 방식:</strong> 정답 시 10~50점 획득 (난이도에 따라 다름), 연속 정답 보너스 적용
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 앱 상태 관리
+        const app = {
+            currentScreen: 'login',
+            isLoggedIn: false,
+            userData: null,
+            sessionData: {
+                questions: [],
+                currentIndex: 0,
+                userAnswers: [],
+                correctCount: 0,
+                incorrectCount: 0,
+                startTime: null,
+                practiceMode: false,
+                practiceQuestions: []
+            },
+            
+            // 화면 전환
+            showScreen(screenName) {
+                // 모든 화면 숨기기
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                
+                // 선택한 화면 보이기
+                document.getElementById(`screen-${screenName}`).classList.add('active');
+                this.currentScreen = screenName;
+                
+                // 진도 바 표시 여부
+                if (['question', 'correct', 'incorrect', 'practice'].includes(screenName)) {
+                    document.getElementById('progressSection').style.display = 'block';
+                } else {
+                    document.getElementById('progressSection').style.display = 'none';
+                }
+                
+                // 설정 화면일 때 사용자 정보 업데이트
+                if (screenName === 'settings' && this.userData) {
+                    document.getElementById('settingsName').textContent = this.userData.name;
+                    document.getElementById('settingsEmail').textContent = this.userData.email;
+                }
+                
+                // 헤더 액션 업데이트
+                this.updateHeaderActions();
+            },
+            
+            // 헤더 액션 버튼 업데이트
+            updateHeaderActions() {
+                const headerActions = document.getElementById('headerActions');
+                
+                if (this.isLoggedIn) {
+                    if (['dashboard', 'summary', 'settings'].includes(this.currentScreen)) {
+                        headerActions.innerHTML = `
+                            <button class="btn btn-secondary btn-sm" onclick="app.showScreen('settings')">설정</button>
+                        `;
+                    } else if (['question', 'correct', 'incorrect', 'practice'].includes(this.currentScreen)) {
+                        headerActions.innerHTML = `
+                            <span class="badge badge-primary">레벨 ${this.userData.level}</span>
+                            <button class="btn btn-secondary btn-sm" onclick="app.exitSession()">나가기</button>
+                        `;
+                    }
+                } else {
+                    headerActions.innerHTML = '';
+                }
+            },
+            
+            // 로그인
+            login() {
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!email || !password) {
+                    alert('이메일과 비밀번호를 입력해주세요.');
+                    return;
+                }
+                
+                // 실제로는 API 호출
+                // 여기서는 데모용으로 바로 로그인 처리
+                this.isLoggedIn = true;
+                this.userData = {
+                    name: '어진',
+                    email: email,
+                    level: 2
+                };
+                
+                // 입력 필드 초기화
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                
+                this.showScreen('dashboard');
+            },
+            
+            // 회원가입
+            signup() {
+                const name = document.getElementById('signupName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+                
+                if (!name || !email || !password || !passwordConfirm) {
+                    alert('모든 필드를 입력해주세요.');
+                    return;
+                }
+                
+                if (password !== passwordConfirm) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+                
+                // 실제로는 API 호출
+                // 여기서는 데모용으로 바로 가입 후 로그인 처리
+                this.isLoggedIn = true;
+                this.userData = {
+                    name: name,
+                    email: email,
+                    level: 1
+                };
+                
+                // 입력 필드 초기화
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupPasswordConfirm').value = '';
+                
+                alert('가입을 환영합니다!');
+                this.showScreen('dashboard');
+            },
+            
+            // 로그아웃
+            logout() {
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    this.isLoggedIn = false;
+                    this.userData = null;
+                    this.showScreen('login');
+                }
+            },
+            
+            // 세션 시작
+            startSession() {
+                // 샘플 문제 데이터 (실제로는 API에서 가져옴)
+                this.sessionData = {
+                    questions: [
+                        {
+                            id: 1,
+                            type: '한국어 → 영어',
+                            text: '나는 매일 아침 커피를 마신다.',
+                            correctAnswers: ['I drink coffee every morning.', 'I drink coffee every morning', 'Every morning I drink coffee.'],
+                            mistakes: {
+                                'drinked': { correct: 'drink', explanation: 'drink는 불규칙 동사입니다. 현재형은 drink를 사용합니다.' }
+                            }
+                        },
+                        {
+                            id: 2,
+                            type: '한국어 → 영어',
+                            text: '그녀는 매일 우유를 마신다.',
+                            correctAnswers: ['She drinks milk every day.', 'She drinks milk every day', 'Every day she drinks milk.'],
+                            mistakes: {
+                                'drink': { correct: 'drinks', explanation: '주어가 3인칭 단수(She)일 때는 동사에 -s를 붙입니다.' }
+                            }
+                        },
+                        {
+                            id: 3,
+                            type: '영어 → 한국어',
+                            text: 'I go to school by bus.',
+                            correctAnswers: ['나는 버스로 학교에 간다.', '나는 버스를 타고 학교에 간다.', '나는 학교에 버스로 간다.'],
+                            mistakes: {}
+                        }
+                    ],
+                    currentIndex: 0,
+                    userAnswers: [],
+                    correctCount: 0,
+                    incorrectCount: 0,
+                    startTime: Date.now(),
+                    practiceMode: false,
+                    practiceQuestions: []
+                };
+                
+                this.showQuestion();
+            },
+            
+            // 문제 표시
+            showQuestion() {
+                const question = this.sessionData.questions[this.sessionData.currentIndex];
+                document.getElementById('questionType').textContent = question.type;
+                document.getElementById('questionText').textContent = question.text;
+                document.getElementById('answerInput').value = '';
+                
+                // 진도 업데이트
+                this.updateProgress();
+                
+                this.showScreen('question');
+            },
+            
+            // 진도 업데이트
+            updateProgress() {
+                const current = this.sessionData.currentIndex + 1;
+                const total = this.sessionData.questions.length;
+                const percent = Math.round((current / total) * 100);
+                
+                document.getElementById('progressText').textContent = `문제 ${current} / ${total}`;
+                document.getElementById('progressPercent').textContent = `${percent}%`;
+                document.getElementById('progressBar').style.width = `${percent}%`;
+            },
+            
+            // 답변 제출
+            submitAnswer() {
+                const userAnswer = document.getElementById('answerInput').value.trim();
+                
+                if (!userAnswer) {
+                    alert('답변을 입력해주세요.');
+                    return;
+                }
+                
+                const question = this.sessionData.questions[this.sessionData.currentIndex];
+                const isCorrect = this.checkAnswer(userAnswer, question.correctAnswers);
+                
+                // 답변 저장
+                this.sessionData.userAnswers.push({
+                    questionId: question.id,
+                    userAnswer: userAnswer,
+                    isCorrect: isCorrect
+                });
+                
+                if (isCorrect) {
+                    this.sessionData.correctCount++;
+                    this.showCorrectFeedback(question, userAnswer);
+                } else {
+                    this.sessionData.incorrectCount++;
+                    this.showIncorrectFeedback(question, userAnswer);
+                }
+            },
+            
+            // 답변 체크 (간단한 비교, 실제로는 더 정교한 알고리즘 필요)
+            checkAnswer(userAnswer, correctAnswers) {
+                const normalized = userAnswer.toLowerCase().trim().replace(/[.,!?]/g, '');
+                return correctAnswers.some(answer => 
+                    answer.toLowerCase().trim().replace(/[.,!?]/g, '') === normalized
+                );
+            },
+            
+            // 정답 피드백 표시
+            showCorrectFeedback(question, userAnswer) {
+                document.getElementById('correctOriginal').textContent = question.text;
+                document.getElementById('correctUserAnswer').textContent = userAnswer;
+                this.showScreen('correct');
+            },
+            
+            // 오답 피드백 표시
+            showIncorrectFeedback(question, userAnswer) {
+                document.getElementById('incorrectOriginal').textContent = question.text;
+                document.getElementById('incorrectCorrectAnswer').textContent = question.correctAnswers[0];
+                
+                // 틀린 부분 분석 (간단한 예시)
+                const mistakes = this.findMistakes(userAnswer, question);
+                document.getElementById('incorrectUserAnswer').innerHTML = this.highlightMistakes(userAnswer, mistakes);
+                
+                // 틀린 부분 설명
+                const mistakesList = document.getElementById('mistakesList');
+                mistakesList.innerHTML = '';
+                
+                if (mistakes.length > 0) {
+                    mistakes.forEach(mistake => {
+                        const div = document.createElement('div');
+                        div.className = 'alert alert-error mb-md';
+                        div.innerHTML = `
+                            <div class="flex items-start gap-md">
+                                <div style="font-size: 20px;">×</div>
+                                <div>
+                                    <p class="text-body font-semibold m-0 mb-xs">
+                                        <span class="mistake">${mistake.word}</span> 
+                                        → 
+                                        <span class="correct-word">${mistake.correct}</span>
+                                    </p>
+                                    <p class="text-small m-0">${mistake.explanation}</p>
+                                </div>
+                            </div>
+                        `;
+                        mistakesList.appendChild(div);
+                    });
+                } else {
+                    mistakesList.innerHTML = '<p class="text-body">사소한 차이가 있습니다. 정답을 참고하세요.</p>';
+                }
+                
+                this.showScreen('incorrect');
+            },
+            
+            // 틀린 부분 찾기 (간단한 예시)
+            findMistakes(userAnswer, question) {
+                const mistakes = [];
+                for (const [wrong, data] of Object.entries(question.mistakes)) {
+                    if (userAnswer.toLowerCase().includes(wrong.toLowerCase())) {
+                        mistakes.push({
+                            word: wrong,
+                            correct: data.correct,
+                            explanation: data.explanation
+                        });
+                    }
+                }
+                return mistakes;
+            },
+            
+            // 틀린 부분 강조
+            highlightMistakes(text, mistakes) {
+                let result = text;
+                mistakes.forEach(mistake => {
+                    const regex = new RegExp(`\\b${mistake.word}\\b`, 'gi');
+                    result = result.replace(regex, `<span class="mistake">${mistake.word}</span>`);
+                });
+                return result;
+            },
+            
+            // 다음 문제
+            nextQuestion() {
+                this.sessionData.currentIndex++;
+                
+                if (this.sessionData.currentIndex < this.sessionData.questions.length) {
+                    this.showQuestion();
+                } else {
+                    this.showSummary();
+                }
+            },
+            
+            // 문제 건너뛰기
+            skipQuestion() {
+                if (confirm('이 문제를 건너뛰시겠습니까?')) {
+                    this.nextQuestion();
+                }
+            },
+            
+            // 연습 문제 시작
+            startPractice() {
+                // 샘플 연습 문제
+                this.sessionData.practiceMode = true;
+                this.sessionData.practiceQuestions = [
+                    {
+                        text: '그녀는 매일 우유를 마신다.',
+                        answer: 'She drinks milk every day.'
+                    }
+                ];
+                
+                const practice = this.sessionData.practiceQuestions[0];
+                document.getElementById('practiceProgress').textContent = '연습 문제 1 / 1';
+                document.getElementById('practiceQuestion').textContent = practice.text;
+                document.getElementById('practiceInput').value = '';
+                
+                this.showScreen('practice');
+            },
+            
+            // 연습 문제 제출
+            submitPractice() {
+                const answer = document.getElementById('practiceInput').value.trim();
+                if (!answer) {
+                    alert('답변을 입력해주세요.');
+                    return;
+                }
+                
+                // 간단하게 다음 문제로
+                alert('잘했어요!');
+                this.sessionData.practiceMode = false;
+                this.nextQuestion();
+            },
+            
+            // 연습 건너뛰기
+            skipPractice() {
+                this.sessionData.practiceMode = false;
+                this.nextQuestion();
+            },
+            
+            // 요약 화면
+            showSummary() {
+                const total = this.sessionData.questions.length;
+                const correct = this.sessionData.correctCount;
+                const incorrect = this.sessionData.incorrectCount;
+                const accuracy = Math.round((correct / total) * 100);
+                const timeSpent = Math.round((Date.now() - this.sessionData.startTime) / 1000 / 60);
+                
+                document.getElementById('summaryTotal').textContent = total;
+                document.getElementById('summaryAccuracy').textContent = `${accuracy}%`;
+                document.getElementById('summaryTime').textContent = `${timeSpent}분`;
+                document.getElementById('summaryCorrect').textContent = `${correct}문제`;
+                document.getElementById('summaryIncorrect').textContent = `${incorrect}문제`;
+                
+                // 진도 바 색상 변경
+                const progressBar = document.getElementById('progressBar');
+                progressBar.className = 'progress-bar progress-bar-success';
+                progressBar.style.width = '100%';
+                
+                this.showScreen('summary');
+            },
+            
+            // 대시보드로
+            goToDashboard() {
+                this.showScreen('dashboard');
+            },
+            
+            // 세션 종료
+            exitSession() {
+                if (this.currentScreen !== 'dashboard' && this.currentScreen !== 'summary') {
+                    if (confirm('학습을 종료하시겠습니까? 진행 상황이 저장되지 않습니다.')) {
+                        this.goToDashboard();
+                    }
+                } else {
+                    this.goToDashboard();
+                }
+            },
+            
+            // 점수 가이드 표시
+            showScoreGuide() {
+                document.getElementById('scoreGuideModal').style.display = 'flex';
+            },
+            
+            // 점수 가이드 닫기
+            closeScoreGuide() {
+                document.getElementById('scoreGuideModal').style.display = 'none';
+            }
+        };
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            app.showScreen('login');
+            
+            // 모달 외부 클릭시 닫기
+            document.getElementById('scoreGuideModal').addEventListener('click', (e) => {
+                if (e.target.id === 'scoreGuideModal') {
+                    app.closeScoreGuide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
