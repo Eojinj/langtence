@@ -1,233 +1,108 @@
 {
-  "sentence_generation_system": {
-    "description": "단어 + 패턴 조합으로 문장 생성",
-    
-    "generation_rules": {
-      "level_1": {
-        "patterns": ["p1_01", "p1_02", "p1_03", "p1_04"],
-        "vocabulary_categories": ["기본_동사", "명사_사람", "명사_사물", "형용사"],
-        "max_sentence_length": 5,
-        "example_generation": {
-          "pattern": "p1_01",
-          "template": "[주어] + ser + [형용사]",
-          "generated": "Yo soy alto",
-          "korean": "나는 키가 크다",
-          "required_words": ["ser", "alto"],
-          "alternative_answers": [
-            "Soy alto",
-            "Yo soy alto"
-          ]
-        }
-      },
-      
-      "level_2": {
-        "patterns": ["p2_01", "p2_02", "p2_03", "p2_04"],
-        "vocabulary_categories": ["기본_동사", "명사_장소", "시간_날짜"],
-        "max_sentence_length": 7,
-        "example_generation": {
-          "pattern": "p2_01",
-          "template": "[주어] + [동사-과거] + [목적어] + [시간]",
-          "generated": "Yo comí pizza ayer",
-          "korean": "나는 어제 피자를 먹었다",
-          "required_words": ["comí", "pizza", "ayer"],
-          "alternative_answers": [
-            "Comí pizza ayer",
-            "Ayer comí pizza",
-            "Yo comí una pizza ayer"
-          ]
-        }
-      },
-      
-      "level_3": {
-        "patterns": ["p3_01", "p3_02", "p3_03", "p3_04"],
-        "vocabulary_categories": ["기본_동사", "부사", "접속사"],
-        "max_sentence_length": 10,
-        "example_generation": {
-          "pattern": "p3_03",
-          "template": "Si + [현재], [미래]",
-          "generated": "Si estudias, aprobarás",
-          "korean": "만약 공부하면, 합격할 것이다",
-          "required_words": ["si", "estudias", "aprobarás"],
-          "alternative_answers": [
-            "Si estudias aprobarás",
-            "Aprobarás si estudias",
-            "Si tú estudias, aprobarás"
-          ]
-        }
-      }
-    }
+  "vocabulary": {
+    "기본_동사": ["ser", "estar", "tener", "hacer", "ir", "venir", "decir", "dar", "poder", "querer", "saber", "ver", "poner", "hablar", "comer", "beber", "vivir", "trabajar", "estudiar", "leer"],
+    "명사_사람": ["persona", "hombre", "mujer", "niño", "niña", "chico", "chica", "amigo", "amiga", "padre", "madre", "hijo", "hija", "hermano", "hermana"],
+    "명사_장소": ["casa", "escuela", "ciudad", "calle", "parque", "tienda", "restaurante", "hospital", "playa", "montaña"],
+    "명사_사물": ["libro", "mesa", "silla", "comida", "agua", "pan", "coche", "teléfono", "dinero", "ropa"],
+    "형용사": ["grande", "pequeño", "bueno", "malo", "nuevo", "viejo", "bonito", "feo", "feliz", "triste", "alto", "bajo"],
+    "부사": ["muy", "mucho", "poco", "siempre", "nunca", "hoy", "ayer", "mañana", "aquí", "allí", "bien", "mal"],
+    "시간": ["hoy", "ayer", "mañana", "ahora", "antes", "después", "lunes", "martes", "miércoles", "jueves", "viernes"]
   },
   
-  "mistake_analysis_system": {
-    "description": "오답 분석 및 연습 문제 매칭",
-    
-    "error_types": {
-      "verb_conjugation": {
-        "name": "동사 활용 오류",
-        "detection": "required_words에 동사가 있는데 형태가 다름",
+  "patterns": {
+    "level_1": [
+      {
+        "id": "p1_01",
+        "name": "ser + 형용사/명사",
         "examples": [
-          {
-            "correct": "comí",
-            "wrong": ["como", "comer", "comido", "comía"],
-            "reason": "시제 오류 - 과거형을 써야 함"
-          },
-          {
-            "correct": "estudiamos",
-            "wrong": ["estudiamos", "estudian", "estudiáis"],
-            "reason": "인칭 오류 - nosotros 형태를 써야 함"
-          }
-        ],
-        "practice_pattern": "같은 동사로 다른 문장 3개"
+          { "es": "Yo soy estudiante", "ko": "나는 학생이다", "required": ["ser", "estudiante"] },
+          { "es": "Ella es alta", "ko": "그녀는 키가 크다", "required": ["ser", "alta"] },
+          { "es": "Nosotros somos amigos", "ko": "우리는 친구다", "required": ["ser", "amigos"] },
+          { "es": "Tú eres profesor", "ko": "너는 선생님이다", "required": ["ser", "profesor"] },
+          { "es": "Él es bajo", "ko": "그는 키가 작다", "required": ["ser", "bajo"] },
+          { "es": "Ellas son hermanas", "ko": "그녀들은 자매다", "required": ["ser", "hermanas"] },
+          { "es": "Yo soy feliz", "ko": "나는 행복하다", "required": ["ser", "feliz"] },
+          { "es": "Ella es bonita", "ko": "그녀는 예쁘다", "required": ["ser", "bonita"] },
+          { "es": "Nosotros somos buenos", "ko": "우리는 좋다", "required": ["ser", "buenos"] },
+          { "es": "Tú eres inteligente", "ko": "너는 똑똑하다", "required": ["ser", "inteligente"] },
+          { "es": "Él es médico", "ko": "그는 의사다", "required": ["ser", "médico"] },
+          { "es": "Ellos son hermanos", "ko": "그들은 형제다", "required": ["ser", "hermanos"] }
+        ]
       },
-      
-      "word_order": {
-        "name": "어순 오류",
-        "detection": "필수 단어는 모두 있지만 순서가 다름",
+      {
+        "id": "p1_02",
+        "name": "estar + 장소/상태",
         "examples": [
-          {
-            "correct": "Yo como pizza",
-            "wrong": ["Pizza yo como", "Como pizza yo"],
-            "reason": "주어-동사-목적어 순서"
-          }
-        ],
-        "practice_pattern": "같은 패턴의 문장 3개"
+          { "es": "Yo estoy en casa", "ko": "나는 집에 있다", "required": ["estar", "casa"] },
+          { "es": "Ella está cansada", "ko": "그녀는 피곤하다", "required": ["estar", "cansada"] },
+          { "es": "Ellos están contentos", "ko": "그들은 기쁘다", "required": ["estar", "contentos"] },
+          { "es": "Tú estás en la escuela", "ko": "너는 학교에 있다", "required": ["estar", "escuela"] },
+          { "es": "Nosotros estamos tristes", "ko": "우리는 슬프다", "required": ["estar", "tristes"] },
+          { "es": "Él está en el parque", "ko": "그는 공원에 있다", "required": ["estar", "parque"] },
+          { "es": "Ella está ocupada", "ko": "그녀는 바쁘다", "required": ["estar", "ocupada"] },
+          { "es": "Yo estoy enfermo", "ko": "나는 아프다", "required": ["estar", "enfermo"] },
+          { "es": "Ellos están en Madrid", "ko": "그들은 마드리드에 있다", "required": ["estar", "Madrid"] },
+          { "es": "Tú estás feliz", "ko": "너는 행복하다", "required": ["estar", "feliz"] },
+          { "es": "Nosotros estamos aquí", "ko": "우리는 여기 있다", "required": ["estar", "aquí"] },
+          { "es": "Ella está en la tienda", "ko": "그녀는 가게에 있다", "required": ["estar", "tienda"] }
+        ]
       },
-      
-      "missing_word": {
-        "name": "필수 단어 누락",
-        "detection": "required_words 중 일부가 없음",
+      {
+        "id": "p1_03",
+        "name": "현재시제 동사",
         "examples": [
-          {
-            "correct": "Yo voy a estudiar",
-            "wrong": ["Yo estudiar", "Voy estudiar"],
-            "missing": "a",
-            "reason": "ir a + 동사원형 구조에서 'a' 필요"
-          }
-        ],
-        "practice_pattern": "같은 구조의 문장 3개"
-      },
-      
-      "wrong_word": {
-        "name": "잘못된 단어 사용",
-        "detection": "필요 없는 단어가 추가됨",
-        "examples": [
-          {
-            "correct": "Soy estudiante",
-            "wrong": ["Soy un estudiante"],
-            "extra": "un",
-            "reason": "ser + 직업/국적 앞에는 관사 불필요"
-          }
-        ],
-        "practice_pattern": "같은 문법 규칙의 문장 3개"
-      },
-      
-      "ser_estar_confusion": {
-        "name": "ser/estar 혼동",
-        "detection": "ser를 써야 하는데 estar 사용 (또는 반대)",
-        "examples": [
-          {
-            "correct": "Yo soy alto",
-            "wrong": ["Yo estoy alto"],
-            "reason": "영구적 특성은 ser"
-          },
-          {
-            "correct": "Yo estoy cansado",
-            "wrong": ["Yo soy cansado"],
-            "reason": "일시적 상태는 estar"
-          }
-        ],
-        "practice_pattern": "ser/estar 구별 문장 5개"
-      }
-    },
-    
-    "practice_generation_algorithm": {
-      "step_1": "사용자 답변 분석",
-      "step_2": "오류 유형 판별 (위의 error_types 중 매칭)",
-      "step_3": "해당 오류에 맞는 문법 패턴 찾기",
-      "step_4": "같은 패턴으로 3-5개 연습 문제 생성",
-      "step_5": "난이도는 원래 문제와 같거나 약간 낮게",
-      
-      "example_flow": {
-        "original_question": {
-          "korean": "나는 어제 피자를 먹었다",
-          "correct": "Yo comí pizza ayer",
-          "pattern": "p2_01",
-          "required_words": ["comí", "pizza", "ayer"]
-        },
-        "user_answer": "Yo como pizza ayer",
-        "error_detected": {
-          "type": "verb_conjugation",
-          "wrong_word": "como",
-          "correct_word": "comí",
-          "reason": "과거형을 써야 하는데 현재형 사용"
-        },
-        "practice_questions_generated": [
-          {
-            "korean": "그녀는 어제 책을 읽었다",
-            "correct": "Ella leyó un libro ayer",
-            "focus": "과거형 leyó"
-          },
-          {
-            "korean": "우리는 작년에 스페인에 갔다",
-            "correct": "Nosotros fuimos a España el año pasado",
-            "focus": "과거형 fuimos"
-          },
-          {
-            "korean": "너는 지난주에 친구를 만났다",
-            "correct": "Tú viste a tu amigo la semana pasada",
-            "focus": "과거형 viste"
-          }
+          { "es": "Yo como pan", "ko": "나는 빵을 먹는다", "required": ["como", "pan"] },
+          { "es": "Ella bebe agua", "ko": "그녀는 물을 마신다", "required": ["bebe", "agua"] },
+          { "es": "Nosotros vivimos aquí", "ko": "우리는 여기 산다", "required": ["vivimos", "aquí"] },
+          { "es": "Tú hablas español", "ko": "너는 스페인어를 말한다", "required": ["hablas", "español"] },
+          { "es": "Ellos estudian mucho", "ko": "그들은 많이 공부한다", "required": ["estudian", "mucho"] },
+          { "es": "Yo leo libros", "ko": "나는 책을 읽는다", "required": ["leo", "libros"] },
+          { "es": "Ella escribe cartas", "ko": "그녀는 편지를 쓴다", "required": ["escribe", "cartas"] },
+          { "es": "Nosotros trabajamos juntos", "ko": "우리는 함께 일한다", "required": ["trabajamos", "juntos"] },
+          { "es": "Tú comes frutas", "ko": "너는 과일을 먹는다", "required": ["comes", "frutas"] },
+          { "es": "Él corre rápido", "ko": "그는 빨리 달린다", "required": ["corre", "rápido"] },
+          { "es": "Ellas cantan bien", "ko": "그녀들은 노래를 잘한다", "required": ["cantan", "bien"] },
+          { "es": "Yo cocino todos los días", "ko": "나는 매일 요리한다", "required": ["cocino", "días"] }
         ]
       }
-    }
-  },
-  
-  "scoring_algorithm": {
-    "description": "AI 없이 유연한 채점",
-    
-    "method_1_exact_match": {
-      "weight": 100,
-      "check": "정확히 일치하는 정답 목록 중 하나"
-    },
-    
-    "method_2_keyword_based": {
-      "weight": 85,
-      "rules": [
-        {
-          "condition": "모든 required_words 포함",
-          "score": 70
-        },
-        {
-          "condition": "+ 어순 정확",
-          "score": "+10"
-        },
-        {
-          "condition": "+ 관사/전치사 정확",
-          "score": "+5"
-        }
-      ]
-    },
-    
-    "method_3_partial_credit": {
-      "weight": 60,
-      "rules": [
-        {
-          "condition": "50% 이상 required_words 포함",
-          "score": 40
-        },
-        {
-          "condition": "+ 동사 활용 정확",
-          "score": "+20"
-        }
-      ]
-    },
-    
-    "threshold": {
-      "perfect": 100,
-      "correct": 85,
-      "almost": 70,
-      "partial": 40,
-      "wrong": 0
-    }
+    ],
+    "level_2": [
+      {
+        "id": "p2_01",
+        "name": "과거시제",
+        "examples": [
+          { "es": "Yo comí pizza ayer", "ko": "나는 어제 피자를 먹었다", "required": ["comí", "pizza", "ayer"] },
+          { "es": "Ella estudió mucho", "ko": "그녀는 많이 공부했다", "required": ["estudió", "mucho"] },
+          { "es": "Nosotros fuimos al cine", "ko": "우리는 영화관에 갔다", "required": ["fuimos", "cine"] },
+          { "es": "Tú bebiste café", "ko": "너는 커피를 마셨다", "required": ["bebiste", "café"] },
+          { "es": "Ellos vivieron en Madrid", "ko": "그들은 마드리드에 살았다", "required": ["vivieron", "Madrid"] },
+          { "es": "Yo leí un libro", "ko": "나는 책을 읽었다", "required": ["leí", "libro"] },
+          { "es": "Ella escribió una carta", "ko": "그녀는 편지를 썼다", "required": ["escribió", "carta"] },
+          { "es": "Nosotros trabajamos ayer", "ko": "우리는 어제 일했다", "required": ["trabajamos", "ayer"] },
+          { "es": "Tú hablaste con él", "ko": "너는 그와 이야기했다", "required": ["hablaste", "él"] },
+          { "es": "Ellas cantaron bien", "ko": "그녀들은 노래를 잘했다", "required": ["cantaron", "bien"] },
+          { "es": "Yo corrí en el parque", "ko": "나는 공원에서 달렸다", "required": ["corrí", "parque"] },
+          { "es": "Él compró un coche", "ko": "그는 차를 샀다", "required": ["compró", "coche"] }
+        ]
+      },
+      {
+        "id": "p2_02",
+        "name": "ir a + 동사원형",
+        "examples": [
+          { "es": "Yo voy a estudiar", "ko": "나는 공부할 것이다", "required": ["voy", "a", "estudiar"] },
+          { "es": "Ella va a cocinar", "ko": "그녀는 요리할 것이다", "required": ["va", "a", "cocinar"] },
+          { "es": "Nosotros vamos a viajar", "ko": "우리는 여행할 것이다", "required": ["vamos", "a", "viajar"] },
+          { "es": "Tú vas a leer", "ko": "너는 읽을 것이다", "required": ["vas", "a", "leer"] },
+          { "es": "Ellos van a jugar", "ko": "그들은 놀 것이다", "required": ["van", "a", "jugar"] },
+          { "es": "Yo voy a comer", "ko": "나는 먹을 것이다", "required": ["voy", "a", "comer"] },
+          { "es": "Ella va a dormir", "ko": "그녀는 잘 것이다", "required": ["va", "a", "dormir"] },
+          { "es": "Nosotros vamos a trabajar", "ko": "우리는 일할 것이다", "required": ["vamos", "a", "trabajar"] },
+          { "es": "Tú vas a escribir", "ko": "너는 쓸 것이다", "required": ["vas", "a", "escribir"] },
+          { "es": "Ellos van a correr", "ko": "그들은 달릴 것이다", "required": ["van", "a", "correr"] },
+          { "es": "Yo voy a comprar pan", "ko": "나는 빵을 살 것이다", "required": ["voy", "a", "comprar", "pan"] },
+          { "es": "Ella va a cantar", "ko": "그녀는 노래할 것이다", "required": ["va", "a", "cantar"] }
+        ]
+      }
+    ]
   }
 }

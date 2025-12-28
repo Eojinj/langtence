@@ -670,78 +670,38 @@
     <script>
         // ==================== 스페인어 학습 데이터 ====================
         
-        // 스페인어 어휘 (중학생 수준)
-        const SPANISH_VOCABULARY = {
-            "기본_동사": ["ser", "estar", "tener", "hacer", "ir", "venir", "decir", "dar", "poder", "querer", "saber", "ver", "poner", "hablar", "comer", "beber", "vivir", "trabajar", "estudiar", "leer"],
-            "명사_사람": ["persona", "hombre", "mujer", "niño", "niña", "chico", "chica", "amigo", "amiga", "padre", "madre", "hijo", "hija", "hermano", "hermana"],
-            "명사_장소": ["casa", "escuela", "ciudad", "calle", "parque", "tienda", "restaurante", "hospital", "playa", "montaña"],
-            "명사_사물": ["libro", "mesa", "silla", "comida", "agua", "pan", "coche", "teléfono", "dinero", "ropa"],
-            "형용사": ["grande", "pequeño", "bueno", "malo", "nuevo", "viejo", "bonito", "feo", "feliz", "triste", "alto", "bajo"],
-            "부사": ["muy", "mucho", "poco", "siempre", "nunca", "hoy", "ayer", "mañana", "aquí", "allí", "bien", "mal"],
-            "시간": ["hoy", "ayer", "mañana", "ahora", "antes", "después", "lunes", "martes", "miércoles", "jueves", "viernes"]
-        };
+        // JSON 파일에서 데이터 로드
+        let SPANISH_VOCABULARY = {};
+        let GRAMMAR_PATTERNS = {};
+        let QUESTION_DATABASE = [];
+        let dataLoaded = false;
         
-        // 문법 패턴 (난이도별)
-        const GRAMMAR_PATTERNS = {
-            "level_1": [
-                {
-                    id: "p1_01",
-                    name: "ser + 형용사/명사",
-                    examples: [
-                        { es: "Yo soy estudiante", ko: "나는 학생이다", required: ["ser", "estudiante"] },
-                        { es: "Ella es alta", ko: "그녀는 키가 크다", required: ["ser", "alta"] },
-                        { es: "Nosotros somos amigos", ko: "우리는 친구다", required: ["ser", "amigos"] }
-                    ]
-                },
-                {
-                    id: "p1_02",
-                    name: "estar + 장소/상태",
-                    examples: [
-                        { es: "Yo estoy en casa", ko: "나는 집에 있다", required: ["estar", "casa"] },
-                        { es: "Ella está cansada", ko: "그녀는 피곤하다", required: ["estar", "cansada"] },
-                        { es: "Ellos están contentos", ko: "그들은 기쁘다", required: ["estar", "contentos"] }
-                    ]
-                },
-                {
-                    id: "p1_03",
-                    name: "현재시제 동사",
-                    examples: [
-                        { es: "Yo como pan", ko: "나는 빵을 먹는다", required: ["como", "pan"] },
-                        { es: "Ella bebe agua", ko: "그녀는 물을 마신다", required: ["bebe", "agua"] },
-                        { es: "Nosotros vivimos aquí", ko: "우리는 여기 산다", required: ["vivimos", "aquí"] }
-                    ]
-                }
-            ],
-            "level_2": [
-                {
-                    id: "p2_01",
-                    name: "과거시제",
-                    examples: [
-                        { es: "Yo comí pizza ayer", ko: "나는 어제 피자를 먹었다", required: ["comí", "pizza", "ayer"] },
-                        { es: "Ella estudió mucho", ko: "그녀는 많이 공부했다", required: ["estudió", "mucho"] },
-                        { es: "Nosotros fuimos al cine", ko: "우리는 영화관에 갔다", required: ["fuimos", "cine"] }
-                    ]
-                },
-                {
-                    id: "p2_02",
-                    name: "ir a + 동사원형",
-                    examples: [
-                        { es: "Yo voy a estudiar", ko: "나는 공부할 것이다", required: ["voy", "a", "estudiar"] },
-                        { es: "Ella va a cocinar", ko: "그녀는 요리할 것이다", required: ["va", "a", "cocinar"] },
-                        { es: "Nosotros vamos a viajar", ko: "우리는 여행할 것이다", required: ["vamos", "a", "viajar"] }
-                    ]
-                }
-            ]
-        };
-        
-        // 문제 데이터베이스 (패턴 기반 자동 생성)
-        const QUESTION_DATABASE = [];
+        // 데이터 로드 함수
+        async function loadQuestionData() {
+            try {
+                const response = await fetch('questions_data.json');
+                const data = await response.json();
+                
+                SPANISH_VOCABULARY = data.vocabulary;
+                GRAMMAR_PATTERNS = data.patterns;
+                
+                // 문제 초기화
+                initializeQuestions();
+                dataLoaded = true;
+                
+                console.log('데이터 로드 완료:', QUESTION_DATABASE.length, '문제');
+            } catch (error) {
+                console.error('데이터 로드 실패:', error);
+                alert('문제 데이터를 불러오는데 실패했습니다.');
+            }
+        }
         
         // 초기화: 패턴에서 문제 생성
         function initializeQuestions() {
             // Level 1 문제
             GRAMMAR_PATTERNS.level_1.forEach(pattern => {
                 pattern.examples.forEach(example => {
+                    // 한국어 → 스페인어
                     QUESTION_DATABASE.push({
                         id: `q_${QUESTION_DATABASE.length + 1}`,
                         level: 1,
@@ -750,7 +710,21 @@
                         text: example.ko,
                         correctAnswers: [example.es],
                         requiredWords: example.required,
-                        difficulty: 1
+                        difficulty: 1,
+                        mistakes: {}
+                    });
+                    
+                    // 스페인어 → 한국어
+                    QUESTION_DATABASE.push({
+                        id: `q_${QUESTION_DATABASE.length + 1}`,
+                        level: 1,
+                        patternId: pattern.id + '_reverse',
+                        type: "스페인어 → 한국어",
+                        text: example.es,
+                        correctAnswers: [example.ko],
+                        requiredWords: [], // 한국어는 키워드 매칭 안 함
+                        difficulty: 1,
+                        mistakes: {}
                     });
                 });
             });
@@ -758,6 +732,7 @@
             // Level 2 문제
             GRAMMAR_PATTERNS.level_2.forEach(pattern => {
                 pattern.examples.forEach(example => {
+                    // 한국어 → 스페인어
                     QUESTION_DATABASE.push({
                         id: `q_${QUESTION_DATABASE.length + 1}`,
                         level: 2,
@@ -766,21 +741,36 @@
                         text: example.ko,
                         correctAnswers: [example.es],
                         requiredWords: example.required,
-                        difficulty: 2
+                        difficulty: 2,
+                        mistakes: {}
+                    });
+                    
+                    // 스페인어 → 한국어
+                    QUESTION_DATABASE.push({
+                        id: `q_${QUESTION_DATABASE.length + 1}`,
+                        level: 2,
+                        patternId: pattern.id + '_reverse',
+                        type: "스페인어 → 한국어",
+                        text: example.es,
+                        correctAnswers: [example.ko],
+                        requiredWords: [],
+                        difficulty: 2,
+                        mistakes: {}
                     });
                 });
             });
         }
         
-        // 앱 로드 시 문제 초기화
-        initializeQuestions();
-        
         // ==================== 앱 상태 관리 ====================
         
         const app = {
-            currentScreen: 'login',
-            isLoggedIn: false,
-            userData: null,
+            currentScreen: 'dashboard',
+            isLoggedIn: true,
+            userData: {
+                name: '사용자',
+                email: 'user@example.com',
+                level: 2
+            },
             sessionData: {
                 questions: [],
                 currentIndex: 0,
@@ -1089,17 +1079,58 @@
             
             // 연습 문제 시작
             startPractice() {
-                // 샘플 연습 문제
-                this.sessionData.practiceMode = true;
-                this.sessionData.practiceQuestions = [
-                    {
-                        text: '그녀는 매일 우유를 마신다.',
-                        answer: 'She drinks milk every day.'
-                    }
-                ];
+                const currentQuestion = this.sessionData.questions[this.sessionData.currentIndex];
                 
-                const practice = this.sessionData.practiceQuestions[0];
-                document.getElementById('practiceProgress').textContent = '연습 문제 1 / 1';
+                // 같은 패턴의 다른 문제들 찾기
+                let samePatternQuestions = QUESTION_DATABASE.filter(q => 
+                    q.patternId === currentQuestion.patternId && q.id !== currentQuestion.id
+                );
+                
+                // 이미 푼 연습 문제 제외 (재시도 시 다른 문제 나오게)
+                if (this.sessionData.usedPracticeIds) {
+                    samePatternQuestions = samePatternQuestions.filter(q => 
+                        !this.sessionData.usedPracticeIds.includes(q.id)
+                    );
+                }
+                
+                // 사용할 문제 ID 추적 초기화
+                if (!this.sessionData.usedPracticeIds) {
+                    this.sessionData.usedPracticeIds = [];
+                }
+                
+                // 랜덤하게 3개 선택
+                const practiceQuestions = [];
+                const tempQuestions = [...samePatternQuestions];
+                
+                for (let i = 0; i < Math.min(3, tempQuestions.length); i++) {
+                    const randomIndex = Math.floor(Math.random() * tempQuestions.length);
+                    const selected = tempQuestions.splice(randomIndex, 1)[0];
+                    practiceQuestions.push(selected);
+                    this.sessionData.usedPracticeIds.push(selected.id);
+                }
+                
+                // 연습 문제가 3개 미만이면 (문제 부족) 다음 문제로
+                if (practiceQuestions.length < 3) {
+                    alert('연습 문제가 부족합니다. 다음 문제로 넘어갑니다.');
+                    this.nextQuestion();
+                    return;
+                }
+                
+                this.sessionData.practiceMode = true;
+                this.sessionData.practiceQuestions = practiceQuestions;
+                this.sessionData.practiceIndex = 0;
+                this.sessionData.practiceCorrectCount = 0;
+                
+                this.showPracticeQuestion();
+            },
+            
+            // 연습 문제 표시
+            showPracticeQuestion() {
+                const practice = this.sessionData.practiceQuestions[this.sessionData.practiceIndex];
+                const current = this.sessionData.practiceIndex + 1;
+                const total = this.sessionData.practiceQuestions.length;
+                
+                document.getElementById('practiceProgress').textContent = `연습 문제 ${current} / ${total}`;
                 document.getElementById('practiceQuestion').textContent = practice.text;
                 document.getElementById('practiceInput').value = '';
                 
@@ -1108,16 +1139,43 @@
             
             // 연습 문제 제출
             submitPractice() {
-                const answer = document.getElementById('practiceInput').value.trim();
-                if (!answer) {
+                const userAnswer = document.getElementById('practiceInput').value.trim();
+                
+                if (!userAnswer) {
                     alert('답변을 입력해주세요.');
                     return;
                 }
                 
-                // 간단하게 다음 문제로
-                alert('잘했어요!');
-                this.sessionData.practiceMode = false;
-                this.nextQuestion();
+                const practice = this.sessionData.practiceQuestions[this.sessionData.practiceIndex];
+                const isCorrect = this.checkAnswer(userAnswer, practice.correctAnswers);
+                
+                if (isCorrect) {
+                    this.sessionData.practiceCorrectCount++;
+                    alert('정답입니다! ✓');
+                } else {
+                    alert(`아쉬워요. 정답: ${practice.correctAnswers[0]}`);
+                }
+                
+                // 다음 연습 문제로
+                this.sessionData.practiceIndex++;
+                
+                // 모든 연습 문제를 풀었는지 확인
+                if (this.sessionData.practiceIndex >= this.sessionData.practiceQuestions.length) {
+                    // 2개 이상 맞았는지 확인
+                    if (this.sessionData.practiceCorrectCount >= 2) {
+                        alert(`연습 완료! ${this.sessionData.practiceCorrectCount}/${this.sessionData.practiceQuestions.length} 정답`);
+                        this.sessionData.practiceMode = false;
+                        this.sessionData.usedPracticeIds = []; // 사용한 문제 초기화
+                        this.nextQuestion();
+                    } else {
+                        // 2개 미만이면 다시 연습 (새로운 문제로)
+                        alert(`조금 더 연습이 필요해요. (${this.sessionData.practiceCorrectCount}/${this.sessionData.practiceQuestions.length} 정답)\n새로운 문제로 다시 시도합니다.`);
+                        this.startPractice(); // 새로운 연습 문제 생성
+                    }
+                } else {
+                    // 다음 연습 문제 표시
+                    this.showPracticeQuestion();
+                }
             },
             
             // 연습 건너뛰기
@@ -1176,8 +1234,12 @@
         };
         
         // 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            app.showScreen('login');
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 데이터 먼저 로드
+            await loadQuestionData();
+            
+            // 화면 표시
+            app.showScreen('dashboard');
             
             // 모달 외부 클릭시 닫기
             document.getElementById('scoreGuideModal').addEventListener('click', (e) => {
