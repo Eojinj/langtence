@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "level": "중학생 (A2-B1)",
+    "language": "Spanish",
+    "total_words": 500,
+    "description": "스페인어 중학생 수준 필수 어휘"
+  },
+  "categories": {
+    "기본_동사": [
+      "ser", "estar", "tener", "hacer", "ir", "venir", "decir", "dar", "poder", "querer",
+      "saber", "ver", "poner", "hablar", "comer", "beber", "vivir", "trabajar", "estudiar", "leer",
+      "escribir", "escuchar", "mirar", "comprar", "vender", "llegar", "salir", "entrar", "subir", "bajar",
+      "abrir", "cerrar", "empezar", "terminar", "conocer", "pensar", "creer", "sentir", "dormir", "despertar",
+      "jugar", "correr", "caminar", "nadar", "bailar", "cantar", "cocinar", "limpiar", "lavar", "ayudar",
+      "buscar", "encontrar", "perder", "ganar", "pagar", "costar", "necesitar", "preferir", "gustar", "encantar",
+      "odiar", "amar", "recordar", "olvidar", "aprender", "enseñar", "entender", "explicar", "preguntar", "responder",
+      "esperar", "llevar", "traer", "enviar", "recibir", "llamar", "contestar", "usar", "funcionar", "romperse"
+    ],
+    "명사_사람": [
+      "persona", "gente", "hombre", "mujer", "niño", "niña", "chico", "chica", "bebé", "adulto",
+      "joven", "anciano", "amigo", "amiga", "novio", "novia", "esposo", "esposa", "marido", "mujer",
+      "padre", "madre", "hijo", "hija", "hermano", "hermana", "abuelo", "abuela", "tío", "tía",
+      "primo", "prima", "sobrino", "sobrina", "familia", "pariente", "vecino", "vecina", "compañero", "compañera",
+      "profesor", "profesora", "estudiante", "alumno", "alumna", "doctor", "doctora", "médico", "enfermero", "enfermera",
+      "cocinero", "cocinera", "camarero", "camarera", "vendedor", "vendedora", "cliente", "jefe", "jefa", "empleado"
+    ],
+    "명사_장소": [
+      "casa", "apartamento", "habitación", "cocina", "baño", "dormitorio", "sala", "jardín", "garaje", "puerta",
+      "ventana", "pared", "suelo", "techo", "escalera", "ascensor", "edificio", "calle", "avenida", "plaza",
+      "parque", "ciudad", "pueblo", "país", "mundo", "escuela", "colegio", "universidad", "clase", "biblioteca",
+      "restaurante", "café", "bar", "tienda", "supermercado", "mercado", "banco", "hospital", "farmacia", "hotel",
+      "aeropuerto", "estación", "parada", "oficina", "fábrica", "iglesia", "museo", "cine", "teatro", "estadio",
+      "playa", "montaña", "río", "lago", "mar", "océano", "bosque", "campo", "isla", "desierto"
+    ],
+    "명사_사물": [
+      "cosa", "objeto", "libro", "cuaderno", "lápiz", "bolígrafo", "papel", "mesa", "silla", "cama",
+      "sofá", "armario", "estantería", "lámpara", "espejo", "reloj", "teléfono", "ordenador", "televisión", "radio",
+      "coche", "autobús", "tren", "avión", "bicicleta", "moto", "barco", "camión", "taxi", "metro",
+      "ropa", "camisa", "pantalón", "falda", "vestido", "zapato", "calcetín", "chaqueta", "abrigo", "gorro",
+      "dinero", "billete", "moneda", "tarjeta", "bolsa", "mochila", "maleta", "llave", "reloj", "gafas",
+      "comida", "pan", "arroz", "pasta", "carne", "pescado", "pollo", "huevo", "queso", "leche",
+      "fruta", "manzana", "naranja", "plátano", "uva", "fresa", "verdura", "tomate", "lechuga", "cebolla",
+      "agua", "café", "té", "zumo", "vino", "cerveza", "refresco", "azúcar", "sal", "aceite"
+    ],
+    "형용사": [
+      "grande", "pequeño", "largo", "corto", "alto", "bajo", "ancho", "estrecho", "gordo", "delgado",
+      "bueno", "malo", "mejor", "peor", "nuevo", "viejo", "joven", "antiguo", "moderno", "bonito",
+      "feo", "hermoso", "guapo", "fácil", "difícil", "simple", "complicado", "importante", "interesante", "aburrido",
+      "feliz", "triste", "contento", "enfadado", "cansado", "ocupado", "libre", "lleno", "vacío", "limpio",
+      "sucio", "caliente", "frío", "caro", "barato", "rico", "pobre", "rápido", "lento", "fuerte",
+      "débil", "duro", "blando", "claro", "oscuro", "negro", "blanco", "rojo", "azul", "verde",
+      "amarillo", "naranja", "marrón", "gris", "rosa", "morado", "abierto", "cerrado", "primero", "último",
+      "siguiente", "anterior", "todo", "cada", "alguno", "ninguno", "mucho", "poco", "bastante", "demasiado"
+    ],
+    "부사": [
+      "muy", "mucho", "poco", "bastante", "demasiado", "más", "menos", "tan", "tanto", "casi",
+      "siempre", "nunca", "jamás", "a veces", "frecuentemente", "raramente", "todavía", "ya", "ahora", "entonces",
+      "luego", "después", "antes", "pronto", "tarde", "temprano", "hoy", "ayer", "mañana", "aquí",
+      "ahí", "allí", "cerca", "lejos", "arriba", "abajo", "delante", "detrás", "dentro", "fuera",
+      "encima", "debajo", "bien", "mal", "mejor", "peor", "así", "también", "tampoco", "solo",
+      "solamente", "incluso", "quizás", "tal vez", "probablemente", "seguramente", "realmente", "verdaderamente", "exactamente", "completamente"
+    ],
+    "전치사_접속사": [
+      "de", "a", "en", "con", "sin", "por", "para", "desde", "hasta", "sobre",
+      "bajo", "entre", "durante", "contra", "según", "mediante", "excepto", "salvo", "y", "e",
+      "o", "u", "pero", "sino", "aunque", "porque", "como", "cuando", "donde", "si",
+      "que", "quien", "cual", "cuyo", "mientras", "apenas", "ni", "pues", "ya que", "puesto que"
+    ],
+    "시간_날짜": [
+      "hora", "minuto", "segundo", "día", "semana", "mes", "año", "siglo", "momento", "tiempo",
+      "mañana", "tarde", "noche", "madrugada", "mediodía", "medianoche", "lunes", "martes", "miércoles", "jueves",
+      "viernes", "sábado", "domingo", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+      "agosto", "septiembre", "octubre", "noviembre", "diciembre", "primavera", "verano", "otoño", "invierno", "fecha",
+      "calendario", "reloj", "pasado", "presente", "futuro", "ayer", "hoy", "mañana", "anteayer", "antes"
+    ],
+    "숫자": [
+      "cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve",
+      "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve",
+      "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa", "cien", "mil",
+      "millón", "primero", "segundo", "tercero", "cuarto", "quinto", "sexto", "séptimo", "octavo", "noveno",
+      "décimo", "medio", "doble", "triple", "par", "impar", "número", "cantidad", "total", "suma"
+    ],
+    "감정_상태": [
+      "amor", "odio", "alegría", "tristeza", "felicidad", "miedo", "sorpresa", "ira", "rabia", "enojo",
+      "paz", "calma", "estrés", "nervios", "preocupación", "esperanza", "desesperación", "confianza", "duda", "vergüenza",
+      "orgullo", "envidia", "celos", "gratitud", "perdón", "rencor", "amistad", "enemigo", "soledad", "compañía"
+    ],
+    "날씨_자연": [
+      "tiempo", "clima", "sol", "luna", "estrella", "cielo", "nube", "lluvia", "nieve", "viento",
+      "tormenta", "trueno", "relámpago", "niebla", "hielo", "calor", "frío", "temperatura", "grado", "húmedo",
+      "seco", "tierra", "arena", "piedra", "roca", "árbol", "planta", "flor", "hierba", "hoja",
+      "raíz", "rama", "tronco", "fruto", "semilla", "animal", "perro", "gato", "pájaro", "pez",
+      "caballo", "vaca", "cerdo", "oveja", "pollo", "insecto", "mosca", "abeja", "hormiga", "araña"
+    ],
+    "교육_학교": [
+      "educación", "escuela", "colegio", "universidad", "clase", "lección", "curso", "asignatura", "materia", "profesor",
+      "alumno", "estudiante", "compañero", "examen", "prueba", "nota", "calificación", "deberes", "tarea", "ejercicio",
+      "pregunta", "respuesta", "estudio", "aprendizaje", "conocimiento", "saber", "idioma", "lengua", "matemáticas", "ciencia",
+      "historia", "geografía", "arte", "música", "deporte", "educación física", "recreo", "vacaciones", "semestre", "trimestre"
+    ],
+    "일_직업": [
+      "trabajo", "empleo", "profesión", "oficio", "carrera", "puesto", "cargo", "empresa", "negocio", "oficina",
+      "reunión", "jefe", "empleado", "compañero", "cliente", "sueldo", "salario", "pago", "horario", "turno",
+      "vacaciones", "descanso", "proyecto", "tarea", "responsabilidad", "experiencia", "currículum", "entrevista", "contrato", "despido"
+    ],
+    "건강_신체": [
+      "salud", "enfermedad", "dolor", "medicina", "medicamento", "pastilla", "inyección", "tratamiento", "cura", "síntoma",
+      "fiebre", "tos", "resfriado", "gripe", "cabeza", "cara", "ojo", "nariz", "oreja", "boca",
+      "diente", "lengua", "labio", "cuello", "hombro", "brazo", "mano", "dedo", "uña", "pecho",
+      "espalda", "estómago", "pierna", "rodilla", "pie", "corazón", "pulmón", "cerebro", "hueso", "músculo",
+      "piel", "sangre", "cuerpo", "altura", "peso", "forma", "ejercicio", "deporte", "dieta", "comida sana"
+    ],
+    "취미_활동": [
+      "pasatiempo", "hobby", "diversión", "entretenimiento", "juego", "deporte", "fútbol", "baloncesto", "tenis", "natación",
+      "música", "canción", "instrumento", "guitarra", "piano", "baile", "película", "serie", "programa", "libro",
+      "lectura", "arte", "pintura", "dibujo", "fotografía", "viaje", "excursión", "paseo", "fiesta", "celebración",
+      "cumpleaños", "boda", "Navidad", "regalo", "sorpresa", "invitación", "visita", "cita", "plan", "idea"
+    ],
+    "기술_통신": [
+      "tecnología", "ordenador", "computadora", "pantalla", "teclado", "ratón", "impresora", "internet", "web", "página",
+      "correo", "email", "mensaje", "chat", "red social", "foto", "vídeo", "aplicación", "programa", "archivo",
+      "documento", "carpeta", "contraseña", "usuario", "cuenta", "teléfono", "móvil", "celular", "llamada", "contacto",
+      "número", "cámara", "batería", "cargador", "cable", "wifi", "conexión", "señal", "datos", "descargar"
+    ]
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "sentence_generation_system": {
+    "description": "단어 + 패턴 조합으로 문장 생성",
+    
+    "generation_rules": {
+      "level_1": {
+        "patterns": ["p1_01", "p1_02", "p1_03", "p1_04"],
+        "vocabulary_categories": ["기본_동사", "명사_사람", "명사_사물", "형용사"],
+        "max_sentence_length": 5,
+        "example_generation": {
+          "pattern": "p1_01",
+          "template": "[주어] + ser + [형용사]",
+          "generated": "Yo soy alto",
+          "korean": "나는 키가 크다",
+          "required_words": ["ser", "alto"],
+          "alternative_answers": [
+            "Soy alto",
+            "Yo soy alto"
+          ]
+        }
+      },
+      
+      "level_2": {
+        "patterns": ["p2_01", "p2_02", "p2_03", "p2_04"],
+        "vocabulary_categories": ["기본_동사", "명사_장소", "시간_날짜"],
+        "max_sentence_length": 7,
+        "example_generation": {
+          "pattern": "p2_01",
+          "template": "[주어] + [동사-과거] + [목적어] + [시간]",
+          "generated": "Yo comí pizza ayer",
+          "korean": "나는 어제 피자를 먹었다",
+          "required_words": ["comí", "pizza", "ayer"],
+          "alternative_answers": [
+            "Comí pizza ayer",
+            "Ayer comí pizza",
+            "Yo comí una pizza ayer"
+          ]
+        }
+      },
+      
+      "level_3": {
+        "patterns": ["p3_01", "p3_02", "p3_03", "p3_04"],
+        "vocabulary_categories": ["기본_동사", "부사", "접속사"],
+        "max_sentence_length": 10,
+        "example_generation": {
+          "pattern": "p3_03",
+          "template": "Si + [현재], [미래]",
+          "generated": "Si estudias, aprobarás",
+          "korean": "만약 공부하면, 합격할 것이다",
+          "required_words": ["si", "estudias", "aprobarás"],
+          "alternative_answers": [
+            "Si estudias aprobarás",
+            "Aprobarás si estudias",
+            "Si tú estudias, aprobarás"
+          ]
+        }
+      }
+    }
+  },
+  
+  "mistake_analysis_system": {
+    "description": "오답 분석 및 연습 문제 매칭",
+    
+    "error_types": {
+      "verb_conjugation": {
+        "name": "동사 활용 오류",
+        "detection": "required_words에 동사가 있는데 형태가 다름",
+        "examples": [
+          {
+            "correct": "comí",
+            "wrong": ["como", "comer", "comido", "comía"],
+            "reason": "시제 오류 - 과거형을 써야 함"
+          },
+          {
+            "correct": "estudiamos",
+            "wrong": ["estudiamos", "estudian", "estudiáis"],
+            "reason": "인칭 오류 - nosotros 형태를 써야 함"
+          }
+        ],
+        "practice_pattern": "같은 동사로 다른 문장 3개"
+      },
+      
+      "word_order": {
+        "name": "어순 오류",
+        "detection": "필수 단어는 모두 있지만 순서가 다름",
+        "examples": [
+          {
+            "correct": "Yo como pizza",
+            "wrong": ["Pizza yo como", "Como pizza yo"],
+            "reason": "주어-동사-목적어 순서"
+          }
+        ],
+        "practice_pattern": "같은 패턴의 문장 3개"
+      },
+      
+      "missing_word": {
+        "name": "필수 단어 누락",
+        "detection": "required_words 중 일부가 없음",
+        "examples": [
+          {
+            "correct": "Yo voy a estudiar",
+            "wrong": ["Yo estudiar", "Voy estudiar"],
+            "missing": "a",
+            "reason": "ir a + 동사원형 구조에서 'a' 필요"
+          }
+        ],
+        "practice_pattern": "같은 구조의 문장 3개"
+      },
+      
+      "wrong_word": {
+        "name": "잘못된 단어 사용",
+        "detection": "필요 없는 단어가 추가됨",
+        "examples": [
+          {
+            "correct": "Soy estudiante",
+            "wrong": ["Soy un estudiante"],
+            "extra": "un",
+            "reason": "ser + 직업/국적 앞에는 관사 불필요"
+          }
+        ],
+        "practice_pattern": "같은 문법 규칙의 문장 3개"
+      },
+      
+      "ser_estar_confusion": {
+        "name": "ser/estar 혼동",
+        "detection": "ser를 써야 하는데 estar 사용 (또는 반대)",
+        "examples": [
+          {
+            "correct": "Yo soy alto",
+            "wrong": ["Yo estoy alto"],
+            "reason": "영구적 특성은 ser"
+          },
+          {
+            "correct": "Yo estoy cansado",
+            "wrong": ["Yo soy cansado"],
+            "reason": "일시적 상태는 estar"
+          }
+        ],
+        "practice_pattern": "ser/estar 구별 문장 5개"
+      }
+    },
+    
+    "practice_generation_algorithm": {
+      "step_1": "사용자 답변 분석",
+      "step_2": "오류 유형 판별 (위의 error_types 중 매칭)",
+      "step_3": "해당 오류에 맞는 문법 패턴 찾기",
+      "step_4": "같은 패턴으로 3-5개 연습 문제 생성",
+      "step_5": "난이도는 원래 문제와 같거나 약간 낮게",
+      
+      "example_flow": {
+        "original_question": {
+          "korean": "나는 어제 피자를 먹었다",
+          "correct": "Yo comí pizza ayer",
+          "pattern": "p2_01",
+          "required_words": ["comí", "pizza", "ayer"]
+        },
+        "user_answer": "Yo como pizza ayer",
+        "error_detected": {
+          "type": "verb_conjugation",
+          "wrong_word": "como",
+          "correct_word": "comí",
+          "reason": "과거형을 써야 하는데 현재형 사용"
+        },
+        "practice_questions_generated": [
+          {
+            "korean": "그녀는 어제 책을 읽었다",
+            "correct": "Ella leyó un libro ayer",
+            "focus": "과거형 leyó"
+          },
+          {
+            "korean": "우리는 작년에 스페인에 갔다",
+            "correct": "Nosotros fuimos a España el año pasado",
+            "focus": "과거형 fuimos"
+          },
+          {
+            "korean": "너는 지난주에 친구를 만났다",
+            "correct": "Tú viste a tu amigo la semana pasada",
+            "focus": "과거형 viste"
+          }
+        ]
+      }
+    }
+  },
+  
+  "scoring_algorithm": {
+    "description": "AI 없이 유연한 채점",
+    
+    "method_1_exact_match": {
+      "weight": 100,
+      "check": "정확히 일치하는 정답 목록 중 하나"
+    },
+    
+    "method_2_keyword_based": {
+      "weight": 85,
+      "rules": [
+        {
+          "condition": "모든 required_words 포함",
+          "score": 70
+        },
+        {
+          "condition": "+ 어순 정확",
+          "score": "+10"
+        },
+        {
+          "condition": "+ 관사/전치사 정확",
+          "score": "+5"
+        }
+      ]
+    },
+    
+    "method_3_partial_credit": {
+      "weight": 60,
+      "rules": [
+        {
+          "condition": "50% 이상 required_words 포함",
+          "score": 40
+        },
+        {
+          "condition": "+ 동사 활용 정확",
+          "score": "+20"
+        }
+      ]
+    },
+    
+    "threshold": {
+      "perfect": 100,
+      "correct": 85,
+      "almost": 70,
+      "partial": 40,
+      "wrong": 0
+    }
+  }
+}

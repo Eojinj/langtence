@@ -668,7 +668,115 @@
     </div>
     
     <script>
-        // 앱 상태 관리
+        // ==================== 스페인어 학습 데이터 ====================
+        
+        // 스페인어 어휘 (중학생 수준)
+        const SPANISH_VOCABULARY = {
+            "기본_동사": ["ser", "estar", "tener", "hacer", "ir", "venir", "decir", "dar", "poder", "querer", "saber", "ver", "poner", "hablar", "comer", "beber", "vivir", "trabajar", "estudiar", "leer"],
+            "명사_사람": ["persona", "hombre", "mujer", "niño", "niña", "chico", "chica", "amigo", "amiga", "padre", "madre", "hijo", "hija", "hermano", "hermana"],
+            "명사_장소": ["casa", "escuela", "ciudad", "calle", "parque", "tienda", "restaurante", "hospital", "playa", "montaña"],
+            "명사_사물": ["libro", "mesa", "silla", "comida", "agua", "pan", "coche", "teléfono", "dinero", "ropa"],
+            "형용사": ["grande", "pequeño", "bueno", "malo", "nuevo", "viejo", "bonito", "feo", "feliz", "triste", "alto", "bajo"],
+            "부사": ["muy", "mucho", "poco", "siempre", "nunca", "hoy", "ayer", "mañana", "aquí", "allí", "bien", "mal"],
+            "시간": ["hoy", "ayer", "mañana", "ahora", "antes", "después", "lunes", "martes", "miércoles", "jueves", "viernes"]
+        };
+        
+        // 문법 패턴 (난이도별)
+        const GRAMMAR_PATTERNS = {
+            "level_1": [
+                {
+                    id: "p1_01",
+                    name: "ser + 형용사/명사",
+                    examples: [
+                        { es: "Yo soy estudiante", ko: "나는 학생이다", required: ["ser", "estudiante"] },
+                        { es: "Ella es alta", ko: "그녀는 키가 크다", required: ["ser", "alta"] },
+                        { es: "Nosotros somos amigos", ko: "우리는 친구다", required: ["ser", "amigos"] }
+                    ]
+                },
+                {
+                    id: "p1_02",
+                    name: "estar + 장소/상태",
+                    examples: [
+                        { es: "Yo estoy en casa", ko: "나는 집에 있다", required: ["estar", "casa"] },
+                        { es: "Ella está cansada", ko: "그녀는 피곤하다", required: ["estar", "cansada"] },
+                        { es: "Ellos están contentos", ko: "그들은 기쁘다", required: ["estar", "contentos"] }
+                    ]
+                },
+                {
+                    id: "p1_03",
+                    name: "현재시제 동사",
+                    examples: [
+                        { es: "Yo como pan", ko: "나는 빵을 먹는다", required: ["como", "pan"] },
+                        { es: "Ella bebe agua", ko: "그녀는 물을 마신다", required: ["bebe", "agua"] },
+                        { es: "Nosotros vivimos aquí", ko: "우리는 여기 산다", required: ["vivimos", "aquí"] }
+                    ]
+                }
+            ],
+            "level_2": [
+                {
+                    id: "p2_01",
+                    name: "과거시제",
+                    examples: [
+                        { es: "Yo comí pizza ayer", ko: "나는 어제 피자를 먹었다", required: ["comí", "pizza", "ayer"] },
+                        { es: "Ella estudió mucho", ko: "그녀는 많이 공부했다", required: ["estudió", "mucho"] },
+                        { es: "Nosotros fuimos al cine", ko: "우리는 영화관에 갔다", required: ["fuimos", "cine"] }
+                    ]
+                },
+                {
+                    id: "p2_02",
+                    name: "ir a + 동사원형",
+                    examples: [
+                        { es: "Yo voy a estudiar", ko: "나는 공부할 것이다", required: ["voy", "a", "estudiar"] },
+                        { es: "Ella va a cocinar", ko: "그녀는 요리할 것이다", required: ["va", "a", "cocinar"] },
+                        { es: "Nosotros vamos a viajar", ko: "우리는 여행할 것이다", required: ["vamos", "a", "viajar"] }
+                    ]
+                }
+            ]
+        };
+        
+        // 문제 데이터베이스 (패턴 기반 자동 생성)
+        const QUESTION_DATABASE = [];
+        
+        // 초기화: 패턴에서 문제 생성
+        function initializeQuestions() {
+            // Level 1 문제
+            GRAMMAR_PATTERNS.level_1.forEach(pattern => {
+                pattern.examples.forEach(example => {
+                    QUESTION_DATABASE.push({
+                        id: `q_${QUESTION_DATABASE.length + 1}`,
+                        level: 1,
+                        patternId: pattern.id,
+                        type: "한국어 → 스페인어",
+                        text: example.ko,
+                        correctAnswers: [example.es],
+                        requiredWords: example.required,
+                        difficulty: 1
+                    });
+                });
+            });
+            
+            // Level 2 문제
+            GRAMMAR_PATTERNS.level_2.forEach(pattern => {
+                pattern.examples.forEach(example => {
+                    QUESTION_DATABASE.push({
+                        id: `q_${QUESTION_DATABASE.length + 1}`,
+                        level: 2,
+                        patternId: pattern.id,
+                        type: "한국어 → 스페인어",
+                        text: example.ko,
+                        correctAnswers: [example.es],
+                        requiredWords: example.required,
+                        difficulty: 2
+                    });
+                });
+            });
+        }
+        
+        // 앱 로드 시 문제 초기화
+        initializeQuestions();
+        
+        // ==================== 앱 상태 관리 ====================
+        
         const app = {
             currentScreen: 'login',
             isLoggedIn: false,
@@ -806,35 +914,18 @@
             
             // 세션 시작
             startSession() {
-                // 샘플 문제 데이터 (실제로는 API에서 가져옴)
+                // QUESTION_DATABASE에서 문제 랜덤 선택 (10문제)
+                const allQuestions = [...QUESTION_DATABASE];
+                const selectedQuestions = [];
+                
+                // 랜덤하게 10문제 선택
+                for (let i = 0; i < Math.min(10, allQuestions.length); i++) {
+                    const randomIndex = Math.floor(Math.random() * allQuestions.length);
+                    selectedQuestions.push(allQuestions.splice(randomIndex, 1)[0]);
+                }
+                
                 this.sessionData = {
-                    questions: [
-                        {
-                            id: 1,
-                            type: '한국어 → 영어',
-                            text: '나는 매일 아침 커피를 마신다.',
-                            correctAnswers: ['I drink coffee every morning.', 'I drink coffee every morning', 'Every morning I drink coffee.'],
-                            mistakes: {
-                                'drinked': { correct: 'drink', explanation: 'drink는 불규칙 동사입니다. 현재형은 drink를 사용합니다.' }
-                            }
-                        },
-                        {
-                            id: 2,
-                            type: '한국어 → 영어',
-                            text: '그녀는 매일 우유를 마신다.',
-                            correctAnswers: ['She drinks milk every day.', 'She drinks milk every day', 'Every day she drinks milk.'],
-                            mistakes: {
-                                'drink': { correct: 'drinks', explanation: '주어가 3인칭 단수(She)일 때는 동사에 -s를 붙입니다.' }
-                            }
-                        },
-                        {
-                            id: 3,
-                            type: '영어 → 한국어',
-                            text: 'I go to school by bus.',
-                            correctAnswers: ['나는 버스로 학교에 간다.', '나는 버스를 타고 학교에 간다.', '나는 학교에 버스로 간다.'],
-                            mistakes: {}
-                        }
-                    ],
+                    questions: selectedQuestions,
                     currentIndex: 0,
                     userAnswers: [],
                     correctCount: 0,

@@ -1,0 +1,276 @@
+{
+  "metadata": {
+    "title": "스페인어 표현 패턴 (난이도별)",
+    "levels": ["초급", "초중급", "중급", "중고급", "고급"],
+    "description": "CEFR A1-B2 수준의 문법 패턴"
+  },
+  
+  "patterns": {
+    "level_1_초급_A1": {
+      "description": "원어민 5-6세 수준, 기본 문장 구조",
+      "grammar_points": [
+        {
+          "id": "p1_01",
+          "name": "주어 + ser + 명사/형용사",
+          "structure": "[주어] + ser + [명사/형용사]",
+          "examples": [
+            { "es": "Yo soy estudiante", "ko": "나는 학생이다" },
+            { "es": "Ella es alta", "ko": "그녀는 키가 크다" },
+            { "es": "Nosotros somos amigos", "ko": "우리는 친구다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú eres profesor", "ko": "너는 선생님이다" },
+            { "es": "Él es bajo", "ko": "그는 키가 작다" }
+          ]
+        },
+        {
+          "id": "p1_02",
+          "name": "주어 + estar + 장소/상태",
+          "structure": "[주어] + estar + [장소/상태]",
+          "examples": [
+            { "es": "Yo estoy en casa", "ko": "나는 집에 있다" },
+            { "es": "Ella está cansada", "ko": "그녀는 피곤하다" },
+            { "es": "Ellos están contentos", "ko": "그들은 기쁘다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú estás en la escuela", "ko": "너는 학교에 있다" },
+            { "es": "Nosotros estamos tristes", "ko": "우리는 슬프다" }
+          ]
+        },
+        {
+          "id": "p1_03",
+          "name": "주어 + tener + 명사",
+          "structure": "[주어] + tener + [명사]",
+          "examples": [
+            { "es": "Yo tengo un libro", "ko": "나는 책이 있다" },
+            { "es": "Ella tiene dos hermanos", "ko": "그녀는 형제가 둘 있다" },
+            { "es": "Nosotros tenemos hambre", "ko": "우리는 배고프다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú tienes un perro", "ko": "너는 개가 있다" },
+            { "es": "Ellos tienen sed", "ko": "그들은 목마르다" }
+          ]
+        },
+        {
+          "id": "p1_04",
+          "name": "주어 + 동사원형 (현재시제)",
+          "structure": "[주어] + [동사-ar/er/ir]",
+          "examples": [
+            { "es": "Yo como pan", "ko": "나는 빵을 먹는다" },
+            { "es": "Ella bebe agua", "ko": "그녀는 물을 마신다" },
+            { "es": "Nosotros vivimos aquí", "ko": "우리는 여기 산다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú hablas español", "ko": "너는 스페인어를 말한다" },
+            { "es": "Ellos estudian mucho", "ko": "그들은 많이 공부한다" }
+          ]
+        }
+      ]
+    },
+    
+    "level_2_초중급_A2": {
+      "description": "원어민 7-8세 수준, 시제 추가",
+      "grammar_points": [
+        {
+          "id": "p2_01",
+          "name": "과거시제 (pretérito)",
+          "structure": "[주어] + [동사-과거형]",
+          "examples": [
+            { "es": "Yo comí pizza ayer", "ko": "나는 어제 피자를 먹었다" },
+            { "es": "Ella estudió mucho", "ko": "그녀는 많이 공부했다" },
+            { "es": "Nosotros fuimos al cine", "ko": "우리는 영화관에 갔다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú bebiste café", "ko": "너는 커피를 마셨다" },
+            { "es": "Ellos vivieron en Madrid", "ko": "그들은 마드리드에 살았다" }
+          ]
+        },
+        {
+          "id": "p2_02",
+          "name": "미래시제 (ir a + infinitivo)",
+          "structure": "[주어] + ir a + [동사원형]",
+          "examples": [
+            { "es": "Yo voy a estudiar", "ko": "나는 공부할 것이다" },
+            { "es": "Ella va a cocinar", "ko": "그녀는 요리할 것이다" },
+            { "es": "Nosotros vamos a viajar", "ko": "우리는 여행할 것이다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú vas a leer", "ko": "너는 읽을 것이다" },
+            { "es": "Ellos van a jugar", "ko": "그들은 놀 것이다" }
+          ]
+        },
+        {
+          "id": "p2_03",
+          "name": "gustar 구문",
+          "structure": "Me/Te/Le + gusta(n) + [명사/동사원형]",
+          "examples": [
+            { "es": "Me gusta el chocolate", "ko": "나는 초콜릿을 좋아한다" },
+            { "es": "Te gustan los gatos", "ko": "너는 고양이들을 좋아한다" },
+            { "es": "Nos gusta bailar", "ko": "우리는 춤추는 것을 좋아한다" }
+          ],
+          "practice_sentences": [
+            { "es": "Le gusta la música", "ko": "그/그녀는 음악을 좋아한다" },
+            { "es": "Les gusta nadar", "ko": "그들은 수영하는 것을 좋아한다" }
+          ]
+        },
+        {
+          "id": "p2_04",
+          "name": "estar + gerundio (진행형)",
+          "structure": "[주어] + estar + [동사-ndo]",
+          "examples": [
+            { "es": "Yo estoy comiendo", "ko": "나는 먹고 있다" },
+            { "es": "Ella está leyendo", "ko": "그녀는 읽고 있다" },
+            { "es": "Nosotros estamos trabajando", "ko": "우리는 일하고 있다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú estás estudiando", "ko": "너는 공부하고 있다" },
+            { "es": "Ellos están jugando", "ko": "그들은 놀고 있다" }
+          ]
+        }
+      ]
+    },
+    
+    "level_3_중급_B1": {
+      "description": "원어민 10-12세 수준, 복합 시제",
+      "grammar_points": [
+        {
+          "id": "p3_01",
+          "name": "현재완료 (pretérito perfecto)",
+          "structure": "[주어] + haber + [과거분사]",
+          "examples": [
+            { "es": "Yo he comido ya", "ko": "나는 이미 먹었다" },
+            { "es": "Ella ha estudiado mucho", "ko": "그녀는 많이 공부했다" },
+            { "es": "Nosotros hemos viajado a España", "ko": "우리는 스페인에 여행 갔다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú has visto esa película", "ko": "너는 그 영화를 봤다" },
+            { "es": "Ellos han terminado el trabajo", "ko": "그들은 일을 끝냈다" }
+          ]
+        },
+        {
+          "id": "p3_02",
+          "name": "접속법 현재 (subjuntivo presente)",
+          "structure": "Quiero que + [주어] + [동사-접속법]",
+          "examples": [
+            { "es": "Quiero que estudies más", "ko": "나는 네가 더 공부하기를 원한다" },
+            { "es": "Espero que vengas", "ko": "나는 네가 오기를 바란다" },
+            { "es": "Es importante que sepas esto", "ko": "네가 이것을 아는 것이 중요하다" }
+          ],
+          "practice_sentences": [
+            { "es": "Ojalá que llueva", "ko": "비가 오기를 바란다" },
+            { "es": "Dudo que él venga", "ko": "나는 그가 올지 의심한다" }
+          ]
+        },
+        {
+          "id": "p3_03",
+          "name": "조건문 (si + 현재, 미래)",
+          "structure": "Si + [현재], [미래]",
+          "examples": [
+            { "es": "Si estudias, aprobarás", "ko": "만약 공부하면, 합격할 것이다" },
+            { "es": "Si llueve, no iremos", "ko": "만약 비가 오면, 가지 않을 것이다" },
+            { "es": "Si tienes tiempo, llámame", "ko": "만약 시간 있으면, 나한테 전화해" }
+          ],
+          "practice_sentences": [
+            { "es": "Si hace frío, me quedo en casa", "ko": "만약 추우면, 집에 있겠다" },
+            { "es": "Si vienes, te lo explicaré", "ko": "만약 네가 오면, 설명해줄게" }
+          ]
+        },
+        {
+          "id": "p3_04",
+          "name": "비교급",
+          "structure": "[주어] + más/menos + [형용사] + que",
+          "examples": [
+            { "es": "Yo soy más alto que tú", "ko": "나는 너보다 키가 크다" },
+            { "es": "Ella es menos inteligente que él", "ko": "그녀는 그보다 덜 똑똑하다" },
+            { "es": "Este libro es mejor que ese", "ko": "이 책은 저것보다 낫다" }
+          ],
+          "practice_sentences": [
+            { "es": "Mi casa es más grande que la tuya", "ko": "내 집은 네 집보다 크다" },
+            { "es": "Hoy hace más calor que ayer", "ko": "오늘이 어제보다 더 덥다" }
+          ]
+        }
+      ]
+    },
+    
+    "level_4_중고급_B2": {
+      "description": "원어민 13-15세 수준, 고급 문법",
+      "grammar_points": [
+        {
+          "id": "p4_01",
+          "name": "과거완료 (pluscuamperfecto)",
+          "structure": "[주어] + había + [과거분사]",
+          "examples": [
+            { "es": "Yo había comido cuando llegaste", "ko": "네가 도착했을 때 나는 이미 먹었었다" },
+            { "es": "Ella había estudiado antes del examen", "ko": "그녀는 시험 전에 공부했었다" },
+            { "es": "Nosotros habíamos salido temprano", "ko": "우리는 일찍 나갔었다" }
+          ],
+          "practice_sentences": [
+            { "es": "Tú habías visto esa película antes", "ko": "너는 그 영화를 전에 봤었다" },
+            { "es": "Ellos habían terminado el trabajo", "ko": "그들은 일을 끝냈었다" }
+          ]
+        },
+        {
+          "id": "p4_02",
+          "name": "접속법 과거 (subjuntivo imperfecto)",
+          "structure": "Si + [접속법 과거], [조건형]",
+          "examples": [
+            { "es": "Si tuviera dinero, viajaría", "ko": "만약 돈이 있다면, 여행하겠다" },
+            { "es": "Si estudiara más, aprobaría", "ko": "만약 더 공부한다면, 합격하겠다" },
+            { "es": "Si fuera rico, compraría una casa", "ko": "만약 부자라면, 집을 사겠다" }
+          ],
+          "practice_sentences": [
+            { "es": "Si pudiera, te ayudaría", "ko": "만약 할 수 있다면, 도와주겠다" },
+            { "es": "Si lloviera, me quedaría en casa", "ko": "만약 비가 온다면, 집에 있겠다" }
+          ]
+        },
+        {
+          "id": "p4_03",
+          "name": "수동태",
+          "structure": "[주어] + ser + [과거분사]",
+          "examples": [
+            { "es": "El libro fue escrito por Cervantes", "ko": "그 책은 세르반테스에 의해 쓰여졌다" },
+            { "es": "La casa fue construida en 1950", "ko": "그 집은 1950년에 지어졌다" },
+            { "es": "Los estudiantes fueron evaluados", "ko": "학생들은 평가되었다" }
+          ],
+          "practice_sentences": [
+            { "es": "La carta fue enviada ayer", "ko": "편지는 어제 보내졌다" },
+            { "es": "El problema fue resuelto", "ko": "문제는 해결되었다" }
+          ]
+        },
+        {
+          "id": "p4_04",
+          "name": "관계대명사",
+          "structure": "[명사] + que/quien/cual + [동사]",
+          "examples": [
+            { "es": "El chico que estudia es mi amigo", "ko": "공부하는 소년은 내 친구다" },
+            { "es": "La casa en la que vivo es grande", "ko": "내가 사는 집은 크다" },
+            { "es": "El libro del cual hablamos es interesante", "ko": "우리가 이야기한 책은 흥미롭다" }
+          ],
+          "practice_sentences": [
+            { "es": "La persona con quien hablé es profesor", "ko": "내가 이야기한 사람은 선생님이다" },
+            { "es": "El lugar donde nací es bonito", "ko": "내가 태어난 곳은 아름답다" }
+          ]
+        }
+      ]
+    }
+  },
+  
+  "common_mistakes": {
+    "ser_vs_estar": {
+      "explanation": "ser는 본질적/영구적 특성, estar는 일시적 상태/위치",
+      "practice_focus": ["p1_01", "p1_02"]
+    },
+    "preterito_vs_imperfecto": {
+      "explanation": "pretérito는 완료된 행동, imperfecto는 습관/배경",
+      "practice_focus": ["p2_01"]
+    },
+    "subjuntivo_triggers": {
+      "explanation": "감정, 희망, 의심 표현 뒤에는 접속법",
+      "practice_focus": ["p3_02", "p4_02"]
+    },
+    "irregular_verbs": {
+      "explanation": "ser, estar, ir, tener 등의 불규칙 동사",
+      "practice_focus": ["p1_01", "p1_02", "p1_03"]
+    }
+  }
+}
